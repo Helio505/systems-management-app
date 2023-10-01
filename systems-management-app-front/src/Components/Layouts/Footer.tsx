@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Row } from "reactstrap";
+import { Button, Col, Row } from "reactstrap";
 
 type FooterProps = {
   children: React.ReactNode;
@@ -19,8 +19,9 @@ const Footer = ({ children }: FooterProps) => {
           xl={3}
           style={{
             display: "flex",
-            flexDirection: "column",
-            justifyContent: "start",
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
             width: "100%",
           }}
         >

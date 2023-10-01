@@ -74,7 +74,7 @@ function SystemSearch() {
           <MainContent>
             <Card
               style={{
-                height: "95%",
+                height: "100%",
               }}
             >
               <CardHeader>
@@ -145,44 +145,40 @@ function SystemSearch() {
           </MainContent>
 
           <Footer>
-            <Row>
-              <Col className="d-flex justify-content-center mt-3">
-                <Button
-                  className="me-2 btn-lg"
-                  color="success"
-                  onClick={() => {
-                    handleQuerySystems();
-                  }}
-                >
-                  Pesquisar
-                  <i className="ri-search-line ms-2 align-middle"></i>
-                </Button>
-                <Button
-                  className="ms-2 mx-2 btn-lg"
-                  color="success"
-                  onClick={() => handleGetAllSystems()}
-                >
-                  Mostrar Todos
-                  <i className="ri-database-2-line ms-2 align-middle"></i>
-                </Button>
-                <Button
-                  className="ms-2 mx-2 btn-lg"
-                  color="danger"
-                  onClick={() => resetFields()}
-                >
-                  Limpar
-                  <i className="ri-close-circle-line ms-2 align-middle"></i>
-                </Button>
-                <Button
-                  className="ms-2 mx-2 btn-lg"
-                  color="primary"
-                  onClick={() => navigate("/system-create")}
-                >
-                  Novo Sistema
-                  <i className="ri-add-circle-line ms-2 align-middle"></i>
-                </Button>
-              </Col>
-            </Row>
+            <Button
+              className="me-2 btn-lg"
+              color="success"
+              onClick={() => {
+                handleQuerySystems();
+              }}
+            >
+              Pesquisar
+              <i className="ri-search-line ms-2 align-middle"></i>
+            </Button>
+            <Button
+              className="ms-2 mx-2 btn-lg"
+              color="success"
+              onClick={() => handleGetAllSystems()}
+            >
+              Mostrar Todos
+              <i className="ri-database-2-line ms-2 align-middle"></i>
+            </Button>
+            <Button
+              className="ms-2 mx-2 btn-lg"
+              color="danger"
+              onClick={() => resetFields()}
+            >
+              Limpar
+              <i className="ri-close-circle-line ms-2 align-middle"></i>
+            </Button>
+            <Button
+              className="ms-2 mx-2 btn-lg"
+              color="primary"
+              onClick={() => navigate("/system-create")}
+            >
+              Novo Sistema
+              <i className="ri-add-circle-line ms-2 align-middle"></i>
+            </Button>
           </Footer>
         </Container>
       </div>
