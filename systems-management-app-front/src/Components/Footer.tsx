@@ -1,9 +1,9 @@
-import React from 'react';
-import { Button, Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
+import React from "react";
+import { Col, Row } from "reactstrap";
 
 type FooterProps = {
-  children: React.ReactNode
-}
+  children: React.ReactNode;
+};
 
 const Footer = ({ children }: FooterProps) => {
   return (
@@ -12,7 +12,7 @@ const Footer = ({ children }: FooterProps) => {
         xxl={9}
         style={{
           backgroundColor: "#f2f2f2",
-          height: "10vh"
+          height: "10vh",
         }}
       >
         <Col
@@ -21,14 +21,14 @@ const Footer = ({ children }: FooterProps) => {
             display: "flex",
             flexDirection: "column",
             justifyContent: "start",
-            width: "100%"
+            width: "100%",
           }}
         >
           {children}
         </Col>
       </Row>
     </React.Fragment>
-  )
-}
+  );
+};
 
 export default Footer;

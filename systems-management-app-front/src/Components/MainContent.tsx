@@ -1,20 +1,23 @@
-import React from 'react';
-import { Button, Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
+import React from "react";
+import { Col, Row } from "reactstrap";
 
 type MainContentProps = {
-  children: React.ReactNode
-}
+  children: React.ReactNode;
+};
 
 const MainContent = ({ children }: MainContentProps) => {
   return (
     <React.Fragment>
-      <Row xxl={9}
+      <Row
+        xxl={9}
         style={{
           // backgroundColor: "#ffffff",
-          height: "60%"
+          height: "60%",
         }}
       >
-        <Col xl={3} className='w-100'
+        <Col
+          xl={3}
+          className="w-100"
           style={{
             // backgroundColor: "red",
             display: "flex",
@@ -27,7 +30,7 @@ const MainContent = ({ children }: MainContentProps) => {
         </Col>
       </Row>
     </React.Fragment>
-  )
-}
+  );
+};
 
 export default MainContent;

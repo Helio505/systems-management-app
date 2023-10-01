@@ -7,12 +7,12 @@ import {
   Query,
   Body,
   Param,
-} from '@nestjs/common';
+} from "@nestjs/common";
 
-import { SystemService } from './system.service';
-import { CreateSystemDto, UpdateSystemDto, QuerySystemsDto } from './dto';
+import { SystemService } from "./system.service";
+import { CreateSystemDto, UpdateSystemDto, QuerySystemsDto } from "./dto";
 
-@Controller('systems')
+@Controller("systems")
 export class SystemController {
   constructor(private systemService: SystemService) {}
 
@@ -29,8 +29,8 @@ export class SystemController {
     return this.systemService.findByQuery(dto);
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
+  @Get(":id")
+  async findOne(@Param("id") id: string) {
     return this.systemService.findOne(id);
   }
 
@@ -39,13 +39,13 @@ export class SystemController {
     return this.systemService.create(dto);
   }
 
-  @Patch(':id')
-  async update(@Param('id') id: string, @Body() dto: UpdateSystemDto) {
+  @Patch(":id")
+  async update(@Param("id") id: string, @Body() dto: UpdateSystemDto) {
     return this.systemService.update(id, dto);
   }
 
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
+  @Delete(":id")
+  async remove(@Param("id") id: string) {
     return this.systemService.remove(id);
   }
 }
