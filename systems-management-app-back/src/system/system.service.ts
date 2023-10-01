@@ -3,9 +3,10 @@ import {
   NotFoundException,
   BadRequestException,
   InternalServerErrorException,
-} from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
-import { CreateSystemDto, UpdateSystemDto, QuerySystemsDto } from './dto';
+} from "@nestjs/common";
+
+import { PrismaService } from "../prisma/prisma.service";
+import { CreateSystemDto, UpdateSystemDto, QuerySystemsDto } from "./dto";
 
 @Injectable()
 export class SystemService {
@@ -28,7 +29,7 @@ export class SystemService {
     const systems = await this.prisma.system.findMany();
     // Check if systems were found
     if (!systems) {
-      throw new NotFoundException('Systems not found');
+      throw new NotFoundException("Systems not found");
     }
 
     // Return systems
@@ -66,7 +67,7 @@ export class SystemService {
 
     // Check if systems were found
     if (!systems) {
-      throw new NotFoundException('Systems not found');
+      throw new NotFoundException("Systems not found");
     }
 
     // Return systems
@@ -93,7 +94,7 @@ export class SystemService {
   async update(id: string, dto: UpdateSystemDto) {
     // If there is no data in dto
     if (!dto) {
-      throw new BadRequestException('No data in dto');
+      throw new BadRequestException("No data in dto");
     }
 
     // Update system
@@ -108,7 +109,7 @@ export class SystemService {
 
     // Check if system was updated
     if (!system) {
-      throw new InternalServerErrorException('Internal Server Error');
+      throw new InternalServerErrorException("Internal Server Error");
     }
 
     // Return system

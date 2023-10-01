@@ -1,9 +1,7 @@
-
-
 type CharsCounterProps = {
   text: string;
   limit: number;
-}
+};
 
 const CharsCounter = ({ text, limit }: CharsCounterProps) => {
   return (
@@ -16,7 +14,7 @@ const CharsCounter = ({ text, limit }: CharsCounterProps) => {
     >
       Quantidade de caracteres disponíveis = {limit - text.length}
     </div>
-  )
-}
+  );
+};
 
 export default CharsCounter;

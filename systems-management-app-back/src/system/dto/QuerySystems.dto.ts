@@ -1,6 +1,5 @@
-import { IsString, IsNotEmpty, IsEnum, IsOptional } from 'class-validator';
-import { MaxLength } from 'class-validator';
-import { Optional } from '@nestjs/common';
+import { IsString, IsNotEmpty, IsOptional } from "class-validator";
+import { MaxLength } from "class-validator";
 
 export class QuerySystemsDto {
   @IsString()

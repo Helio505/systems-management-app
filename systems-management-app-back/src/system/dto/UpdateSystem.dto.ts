@@ -1,9 +1,9 @@
-import { IsString, IsNotEmpty, IsEnum } from 'class-validator';
-import { MaxLength } from 'class-validator';
+import { IsString, IsNotEmpty, IsEnum } from "class-validator";
+import { MaxLength } from "class-validator";
 
 enum Status {
-  ATIVO = 'ATIVO',
-  CANCELADO = 'CANCELADO',
+  ATIVO = "ATIVO",
+  CANCELADO = "CANCELADO",
 }
 
 export class UpdateSystemDto {

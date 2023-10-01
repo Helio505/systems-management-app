@@ -1,4 +1,5 @@
 ### Como executar projeto
+
 1. Verificar se docker e docker-compose estão instalados.
 2. Executar os containers docker, com o comando `docker compose up -d --build`.
 
@@ -7,6 +8,7 @@
 2. Executar o comando `npm run seed` para popular o banco de dados com dados de teste. -->
 
 ### Ao executar projeto
+
 - Ao executar o comando `docker compose up -d --build` os containeres da api, banco de dados e do frontend serão criados e executados.
 - A api estará disponível na porta 3333.
 - O frontend estará disponível na porta 3000.

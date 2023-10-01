@@ -1,5 +1,5 @@
-export * from './CreateSystem.dto';
+export * from "./CreateSystem.dto";
 
-export * from './UpdateSystem.dto';
+export * from "./UpdateSystem.dto";
 
-export * from './QuerySystems.dto';
+export * from "./QuerySystems.dto";
