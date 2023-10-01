@@ -183,13 +183,13 @@ function SystemUpdate() {
                 </Col>
               </CardBody>
             </Card>
+
             <Card>
               <CardHeader>
                 <h3 style={{ color: "green", fontWeight: "bold" }}>
                   Controle do Sistema
                 </h3>
               </CardHeader>
-
               <CardBody>
                 <Col
                   style={{
@@ -290,26 +290,22 @@ function SystemUpdate() {
           </MainContent>
 
           <Footer>
-            <Row className="mt-4">
-              <Col className="d-flex justify-content-center mt-3">
-                <Button
-                  className="me-4 btn-lg"
-                  color="primary"
-                  onClick={() => navigate("/")}
-                >
-                  Voltar
-                  <i className="ri-arrow-left-line ms-2"></i>
-                </Button>
-                <Button
-                  className="btn-lg"
-                  color="success"
-                  onClick={() => handleUpdateSystem()}
-                >
-                  Salvar
-                  <i className="ri-save-line ms-2"></i>
-                </Button>
-              </Col>
-            </Row>
+            <Button
+              className="me-4 btn-lg"
+              color="primary"
+              onClick={() => navigate("/")}
+            >
+              Voltar
+              <i className="ri-arrow-left-line ms-2"></i>
+            </Button>
+            <Button
+              className="btn-lg"
+              color="success"
+              onClick={() => handleUpdateSystem()}
+            >
+              Salvar
+              <i className="ri-save-line ms-2"></i>
+            </Button>
           </Footer>
         </Container>
       </div>
