@@ -26,7 +26,6 @@ export class SystemService {
   async findAll() {
     // Find all systems
     const systems = await this.prisma.system.findMany();
-
     // Check if systems were found
     if (!systems) {
       throw new NotFoundException('Systems not found');
@@ -44,16 +43,25 @@ export class SystemService {
 
     if (description) {
       systems = systems.filter((system) =>
-        system.description.includes(description),
+        system.description
+          .toLocaleLowerCase()
+          .includes(description.toLocaleLowerCase()),
       );
     }
 
     if (acronym) {
-      systems = systems.filter((system) => system.acronym.includes(acronym));
+      systems = systems.filter((system) =>
+        system.acronym
+          .toLocaleLowerCase()
+          .includes(acronym.toLocaleLowerCase()),
+      );
     }
 
     if (email) {
-      systems = systems.filter((system) => system.email.includes(email));
+      systems = systems.filter(
+        (system) =>
+          system.email.toLocaleLowerCase() === email.toLocaleLowerCase(),
+      );
     }
 
     // Check if systems were found
