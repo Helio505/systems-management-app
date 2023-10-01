@@ -9,7 +9,6 @@ import {
   Container,
   Input,
   Label,
-  Row,
 } from "reactstrap";
 
 import Footer from "../../Components/Layouts/Footer";
@@ -18,6 +17,7 @@ import MainContent from "../../Components/Layouts/MainContent";
 import CharsCounter from "../../Components/CharsCounter";
 import { System } from "../../Helpers/types";
 import { updateSystem } from "../../Components/SystemCrud";
+import convertDate from "../../Helpers/convertDate";
 
 function SystemUpdate() {
   const location = useLocation();
@@ -238,7 +238,7 @@ function SystemUpdate() {
                       className="w-50 mx-3"
                       bsSize="lg"
                       disabled
-                      value={previousSystem?.updatedAt}
+                      value={convertDate(previousSystem?.updatedAt) || ""}
                     />
                   </Col>
                   <Col className="mb-3 d-flex justify-content-center">
