@@ -15,9 +15,10 @@ import {
 
 import "../../index.css";
 import { querySystems, getAllSystems } from "../../Components/SystemCrud";
-import Header from "../../Components/Header";
-import Footer from "../../Components/Footer";
-import MainContent from "../../Components/MainContent";
+import Header from "../../Components/Layouts/Header";
+import Footer from "../../Components/Layouts/Footer";
+import MainContent from "../../Components/Layouts/MainContent";
+import SearchResultsTable from "../../Components/Tables/SearchResultsTable";
 
 function SystemSearch() {
   const navigate = useNavigate();
@@ -67,19 +68,7 @@ function SystemSearch() {
       <div className="page-content h-100 w-100">
         <Container fluid>
           <Header>
-            <Row
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                alignItems: "center",
-                height: "100%",
-              }}
-            >
-              <Col className="d-flex justify-content-start">
-                <h1 className="display-5 fw-bold">Pesquisar Sistemas</h1>
-              </Col>
-            </Row>
+            <h1 className="display-5 fw-bold">Pesquisar Sistemas</h1>
           </Header>
 
           <MainContent>
@@ -141,44 +130,7 @@ function SystemSearch() {
                 </Col>
 
                 {searchResults && searchResults.length > 0 ? (
-                  <Table striped bordered hover>
-                    <thead>
-                      <tr>
-                        <th>Descrição</th>
-                        <th>Sigla</th>
-                        <th>E-mail de atendimento do sistema</th>
-                        <th>URL</th>
-                        <th>Status</th>
-                        <th>Ações</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {searchResults.map((system) => (
-                        <tr key={system.id}>
-                          <td>{system.description}</td>
-                          <td>{system.acronym}</td>
-                          <td>{system.email}</td>
-                          <td>{system.url}</td>
-                          <td>{system.status}</td>
-                          <td>
-                            <Button
-                              className="btn-sm"
-                              color="success"
-                              onClick={() => {
-                                navigate(`/system-update`, {
-                                  state: {
-                                    system: system,
-                                  },
-                                });
-                              }}
-                            >
-                              Editar
-                            </Button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
+                  <SearchResultsTable searchResults={searchResults} />
                 ) : (
                   <Card className="mb-3 bg-light border-0">
                     <CardBody>

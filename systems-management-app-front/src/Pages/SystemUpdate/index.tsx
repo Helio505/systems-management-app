@@ -12,9 +12,9 @@ import {
   Row,
 } from "reactstrap";
 
-import Footer from "../../Components/Footer";
-import Header from "../../Components/Header";
-import MainContent from "../../Components/MainContent";
+import Footer from "../../Components/Layouts/Footer";
+import Header from "../../Components/Layouts/Header";
+import MainContent from "../../Components/Layouts/MainContent";
 import CharsCounter from "../../Components/CharsCounter";
 import { System } from "../../Helpers/types";
 import { updateSystem } from "../../Components/SystemCrud";
@@ -98,19 +98,7 @@ function SystemUpdate() {
       <div className="page-content h-100 w-100">
         <Container fluid>
           <Header>
-            <Row
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                alignItems: "center",
-                height: "100%",
-              }}
-            >
-              <Col className="d-flex justify-content-start">
-                <h1 className="display-5 fw-bold">Manter Sistema</h1>
-              </Col>
-            </Row>
+            <h1 className="display-5 fw-bold">Manter Sistema</h1>
           </Header>
 
           <MainContent>

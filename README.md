@@ -2,6 +2,7 @@
 
 1. Verificar se docker e docker-compose estão instalados.
 2. Executar os containers docker, com o comando `docker compose up -d --build`.
+   obs. Tem que esperar a criação dos containeres terminar. Quando estiverem prontos, a aplicação estará disponível em `http://localhost:3000/`.
 
 <!-- ### Como popular o banco de dados com dados de teste
 1. Executar o comando `docker exec -it api bash` para acessar o container da api.
