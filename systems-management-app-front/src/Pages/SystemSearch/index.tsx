@@ -49,9 +49,13 @@ function SystemSearch() {
       return;
     }
 
-    const systems = await querySystems(queryString);
-    const data = await systems.json();
-    setSearchResults(data);
+    try {
+      const systems = await querySystems(queryString);
+      const data = await systems.json();
+      setSearchResults(data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const resetFields = () => {
