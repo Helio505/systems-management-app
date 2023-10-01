@@ -19,14 +19,23 @@ const Header = ({ children }: HeaderProps) => {
           xl={3}
           className="w-100"
           style={{
-            // backgroundColor: "red",
             display: "flex",
             flexDirection: "column",
             justifyContent: "end",
-            // alignItems: "center",
+            alignItems: "start",
           }}
         >
-          {children}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              height: "100%",
+            }}
+          >
+            {children}
+          </div>
         </Col>
       </Row>
     </React.Fragment>
