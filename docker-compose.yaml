@@ -1,0 +1,17 @@
+version: '3.9'
+services:
+  front:
+    extends:
+      file: systems-management-app-front/docker-compose.yaml
+      service: front
+  database:
+    extends:
+      file: systems-management-app-back/docker-compose.yaml
+      service: database
+  api:
+    extends:
+      file: systems-management-app-back/docker-compose.yaml
+      service: api
+networks:
+  kingspan-network:
+    driver: bridge
