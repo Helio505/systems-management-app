@@ -87,8 +87,12 @@ function SystemUpdate() {
       return;
     }
 
-    const response = await updateSystem(previousSystem.id, newSystem);
-    const data = await response.json();
+    try {
+      const response = await updateSystem(previousSystem.id, newSystem);
+      const data = await response.json();
+    } catch (error) {
+      console.error(error);
+    }
 
     // TODO if sucess, redirect after 2s
   };

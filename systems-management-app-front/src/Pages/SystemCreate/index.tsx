@@ -43,8 +43,12 @@ function SystemCreate() {
       delete systemToCreate.url;
     }
 
-    const system = await createSystem(newSystem);
-    const data = await system.json();
+    try {
+      const response = await createSystem(newSystem);
+      const data = await response.json();
+    } catch (error) {
+      console.error(error);
+    }
 
     // TODO if sucess, redirect after 2s
   };
