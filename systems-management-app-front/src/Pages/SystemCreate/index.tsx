@@ -17,7 +17,7 @@ function SystemCreate() {
     url: "",
   });
 
-  const handleCreateSystem = async () => {   
+  const handleCreateSystem = async () => {
     let systemToCreate = newSystem;
 
     if (!systemToCreate.description || !systemToCreate.acronym) {
@@ -35,7 +35,8 @@ function SystemCreate() {
 
     const system = await createSystem(newSystem);
     const data = await system.json();
-    console.log(data);
+
+    // TODO if sucess, redirect after 2s
   }
   return (
     <React.Fragment>
@@ -135,10 +136,11 @@ function SystemCreate() {
               <Col className='d-flex justify-content-center mt-3'>
                 <Button
                   className='me-4 btn-lg'
-                  color='success'
+                  color='primary'
                   onClick={() => navigate("/")}
                 >
                   Voltar
+                  <i className='ri-arrow-left-line ms-2'></i>
                 </Button>
                 <Button
                   className='btn-lg'
@@ -146,6 +148,7 @@ function SystemCreate() {
                   onClick={() => handleCreateSystem()}
                 >
                   Salvar
+                  <i className='ri-save-line ms-2'></i>
                 </Button>
               </Col>
             </Row>

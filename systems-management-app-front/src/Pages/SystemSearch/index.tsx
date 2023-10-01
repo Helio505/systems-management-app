@@ -8,6 +8,7 @@ import {
   updateSystem,
   deleteSystem,
 } from "../../Components/SystemCrud";
+import '../../index.css';
 import Header from '../../Components/Header';
 import Footer from '../../Components/Footer';
 import MainContent from '../../Components/MainContent';
@@ -21,26 +22,10 @@ function SystemSearch() {
   const [email, setEmail] = React.useState<string>("");
   const [searchResults, setSearchResults] = React.useState<any[]>([]);
 
-  // const [itemsByPage, setItemsByPage] = React.useState<number>(10);
-  // const [searchParams, setSearchParams] = useSearchParams();
-  // const description = searchParams.get("food");
-  // useEffect(() => {
-  //   setSearchParams({
-  //     description: description,
-  //     acronym: acronym,
-  //     email: email
-  //   });
-  //   console.log(searchParams.toString());
-  // }, [description, acronym, email]);
-  // const queryParams = new URLSearchParams();
-  // queryParams.append("description", description);
-  // queryParams.append("acronym", acronym);
-
   const handleGetAllSystems = async () => {
     const response = await getAllSystems();
     const data = await response.json();
     setSearchResults(data);
-    console.log(data);
   };
 
   const handleQuerySystems = async () => {
@@ -54,9 +39,6 @@ function SystemSearch() {
     if (email) {
       queryString += `email=${email}`;
     }
-    console.log({
-      queryString
-    });
 
     if (queryString === "?") {
       alert("Preencha ao menos um campo para realizar a consulta!");
@@ -66,7 +48,6 @@ function SystemSearch() {
     const systems = await querySystems(queryString);
     const data = await systems.json();
     setSearchResults(data);
-    console.log(data);
   }
 
   const resetFields = () => {
@@ -97,16 +78,12 @@ function SystemSearch() {
           <MainContent>
             <Card
               style={{
-                borderColor: "black",
                 height: "95%",
               }}>
-              <CardHeader
-                style={{
-                  color: "green",
-                  fontWeight: "bold",
-                  fontSize: "20px",
-                }}>
-                Filtro de Consulta
+              <CardHeader>
+                <h3 style={{ color: "green", fontWeight: "bold", }}>
+                  Filtro de Consulta
+                </h3>
               </CardHeader>
               <CardBody>
                 <Col
@@ -212,35 +189,39 @@ function SystemSearch() {
             <Row>
               <Col className='d-flex justify-content-center mt-3'>
                 <Button
-                  className='me-4 btn-lg'
+                  className='me-2 btn-lg'
                   color='success'
                   onClick={() => {
                     handleQuerySystems();
                   }}
                 >
                   Pesquisar
+                  <i className='ri-search-line ms-2 align-middle'></i>
                 </Button>
                 <Button
-                  className='ms-4 mx-4 btn-lg'
-                  color='primary'
+                  className='ms-2 mx-2 btn-lg'
+                  color='success'
                   onClick={() => handleGetAllSystems()}
                 >
                   Mostrar Todos
+                  <i className='ri-database-2-line ms-2 align-middle'></i>
                 </Button>
                 <Button
-                  className='ms-4 mx-4 btn-lg'
+                  className='ms-2 mx-2 btn-lg'
                   color='danger'
                   onClick={() => resetFields()}
                 >
                   Limpar
+                  <i className='ri-close-circle-line ms-2 align-middle'></i>
                 </Button>
                 <Button
-                  className='ms-4 mx-4 btn-lg'
+                  className='ms-2 mx-2 btn-lg'
                   color='primary'
                   onClick={() => navigate("/system-create")
                   }
                 >
                   Novo Sistema
+                  <i className='ri-add-circle-line ms-2 align-middle'></i>
                 </Button>
               </Col>
             </Row>

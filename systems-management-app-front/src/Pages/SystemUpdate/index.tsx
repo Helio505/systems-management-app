@@ -76,7 +76,8 @@ function SystemUpdate() {
 
     const response = await updateSystem(previousSystem.id, newSystem);
     const data = await response.json();
-    console.log(data);
+
+    // TODO if sucess, redirect after 2s
   }
 
   return (
@@ -272,10 +273,11 @@ function SystemUpdate() {
               <Col className='d-flex justify-content-center mt-3'>
                 <Button
                   className='me-4 btn-lg'
-                  color='success'
+                  color='primary'
                   onClick={() => navigate("/")}
                 >
                   Voltar
+                  <i className='ri-arrow-left-line ms-2'></i>
                 </Button>
                 <Button
                   className='btn-lg'
@@ -283,6 +285,7 @@ function SystemUpdate() {
                   onClick={() => handleUpdateSystem()}
                 >
                   Salvar
+                  <i className='ri-save-line ms-2'></i>
                 </Button>
               </Col>
             </Row>
