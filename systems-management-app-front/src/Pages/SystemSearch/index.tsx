@@ -9,8 +9,6 @@ import {
   Container,
   Input,
   Label,
-  Row,
-  Table,
 } from "reactstrap";
 
 import "../../index.css";
@@ -72,11 +70,7 @@ function SystemSearch() {
           </Header>
 
           <MainContent>
-            <Card
-              style={{
-                height: "100%",
-              }}
-            >
+            <Card>
               <CardHeader>
                 <h3 style={{ color: "green", fontWeight: "bold" }}>
                   Filtro de Consulta

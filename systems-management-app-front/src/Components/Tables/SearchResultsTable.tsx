@@ -33,7 +33,7 @@ const SearchResultsTable = ({ searchResults }: SearchResultsTableProps) => {
             <td>
               <Button
                 className="btn-sm"
-                color="success"
+                color="warning"
                 onClick={() => {
                   navigate(`/system-update`, {
                     state: {
@@ -43,6 +43,7 @@ const SearchResultsTable = ({ searchResults }: SearchResultsTableProps) => {
                 }}
               >
                 Editar
+                <i className="ri-pencil-line ml-1"></i>
               </Button>
             </td>
           </tr>

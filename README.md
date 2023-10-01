@@ -1,3 +1,7 @@
+### Descrição
+
+É um projeto que lida com o manuseio, criação e manutenção de sistemas.
+
 ### Como executar projeto
 
 1. Verificar se docker e docker-compose estão instalados.
