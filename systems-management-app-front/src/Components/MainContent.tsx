@@ -10,7 +10,7 @@ const MainContent = ({ children }: MainContentProps) => {
     <React.Fragment>
       <Row xxl={9}
         style={{
-          backgroundColor: "#ffffff",
+          // backgroundColor: "#ffffff",
           height: "60%"
         }}
       >
