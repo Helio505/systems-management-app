@@ -5,6 +5,7 @@ import "./App.css";
 import SystemSearch from "./Pages/SystemSearch";
 import SystemUpdate from "./Pages/SystemUpdate";
 import SystemCreate from "./Pages/SystemCreate";
+import Test from "./Pages/Test";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/system-update" element={<SystemUpdate />} />
         <Route path="/system-create" element={<SystemCreate />} />
         <Route path="*" element={<SystemSearch />} />
+        <Route path="/test" element={<Test />} />
       </Routes>
     </React.Fragment>
   );
