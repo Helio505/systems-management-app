@@ -18,11 +18,11 @@ model System {
   description String @db.VarChar(100)
   acronym     String @db.VarChar(10)
 
-  email         String? @db.VarChar(100) // TODO deve ser validado.
+  email         String? @db.VarChar(100)
   url           String? @db.VarChar(50)
   status        Status  @default(ATIVO)
-  user          String? @db.VarChar(100) @default("Admin") // Usuário responsável pela ultima mudança
-  justification String? @db.VarChar(100) // Justificativa da ultima mudança
+  user          String? @db.VarChar(100)
+  justification String? @db.VarChar(100)
 }
 
 // status enum
