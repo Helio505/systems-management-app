@@ -18,6 +18,7 @@ import MainContent from "../../Components/Layouts/MainContent";
 import { System } from "../../Helpers/types";
 import { createSystem } from "../../Components/SystemCrud";
 import useAlert from "../../Components/Hooks/Alert";
+import isEmailValid from "../../Helpers/validateEmail";
 
 function SystemCreate() {
   const navigate = useNavigate();
@@ -34,7 +35,12 @@ function SystemCreate() {
     let systemToCreate = newSystem;
 
     if (!systemToCreate.description || !systemToCreate.acronym) {
-      activateAlert("danger", "Dados obrigatórios não informados.");
+      activateAlert("warning", "Dados obrigatórios não informados.");
+      return;
+    }
+
+    if (systemToCreate.email && !isEmailValid(systemToCreate.email)) {
+      activateAlert("warning", "E-mail inválido.");
       return;
     }
 
@@ -48,12 +54,13 @@ function SystemCreate() {
 
     try {
       const response = await createSystem(newSystem);
-      const data = await response.json();
-      activateAlert("success", "Operação realizado com sucesso!");
-      // after 2s, redirect to home
-      setTimeout(() => {
-        navigate("/");
-      }, 2000);
+      if (response && response.ok) {
+        activateAlert("success", "Operação realizada com sucesso!");
+        // after 2s, redirect to home
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
+      }
     } catch (error) {
       console.error(error);
       activateAlert("danger", "Erro ao criar o sistema!");

@@ -20,6 +20,7 @@ import { System } from "../../Helpers/types";
 import { updateSystem } from "../../Components/SystemCrud";
 import convertDate from "../../Helpers/convertDate";
 import useAlert from "../../Components/Hooks/Alert";
+import isEmailValid from "../../Helpers/validateEmail";
 
 function SystemUpdate() {
   const location = useLocation();
@@ -59,20 +60,26 @@ function SystemUpdate() {
   const handleUpdateSystem = async () => {
     const { description, acronym, email, url, status, justification } =
       newSystem;
+
     if (!description || !acronym || !status || !justification) {
-      alert("Preencha os campos obrigatórios");
+      activateAlert("warning", "Dados obrigatórios não informados.");
+      return;
+    }
+
+    if (email && !isEmailValid(email)) {
+      activateAlert("warning", "E-mail inválido.");
       return;
     }
 
     // const confirm = window.confirm("Deseja realmente atualizar o sistema?");
 
     if (!previousSystem) {
-      alert("Sistema não encontrado");
+      activateAlert("danger", "Sistema não encontrado");
       return;
     }
 
     if (!previousSystem.id) {
-      alert("Sistema não encontrado");
+      activateAlert("danger", "Sistema não encontrado");
       return;
     }
 
@@ -85,19 +92,21 @@ function SystemUpdate() {
       previousSystem.status === newSystem.status &&
       newSystem.justification === ""
     ) {
-      alert("Nenhuma alteração realizada");
+      activateAlert("warning", "Nenhuma alteração foi realizada.");
       return;
     }
 
     try {
       const response = await updateSystem(previousSystem.id, newSystem);
-      const data = await response.json();
-      setPreviousSystem(data);
-      activateAlert("success", "Operação realizado com sucesso!");
-      // after 2s, redirect to home
-      setTimeout(() => {
-        navigate("/");
-      }, 2000);
+      if (response && response.ok) {
+        const data = await response.json();
+        setPreviousSystem(data);
+        activateAlert("success", "Operação realizada com sucesso!");
+        // after 2s, redirect to home
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
+      }
     } catch (error) {
       console.error(error);
       activateAlert("danger", "Erro ao atualizar o sistema!");

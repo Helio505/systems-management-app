@@ -20,6 +20,7 @@ import MainContent from "../../Components/Layouts/MainContent";
 import SearchResultsTable from "../../Components/Tables/SearchResultsTable";
 import useAlert from "../../Components/Hooks/Alert";
 import { System } from "../../Helpers/types";
+import isEmailValid from "../../Helpers/validateEmail";
 
 function SystemSearch() {
   const navigate = useNavigate();
@@ -51,11 +52,6 @@ function SystemSearch() {
       queryString += `acronym=${acronym}&`;
     }
 
-    const emailRegex = /^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
-    const isEmailValid = (email: string): boolean => {
-      return emailRegex.test(email);
-    };
-
     if (email) {
       if (!isEmailValid(email)) {
         activateAlert("warning", "E-mail inválido.");
@@ -70,14 +66,16 @@ function SystemSearch() {
     }
 
     try {
-      const systems = await querySystems(queryString);
-      const data = await systems.json();
-      setSearchResults(data);
-      if (data && data.length === 0) {
-        activateAlert(
-          "warning",
-          "Nenhum Sistema foi encontrado. Favor revisar os critérios da sua pesquisa!"
-        );
+      const response = await querySystems(queryString);
+      if (response && response.ok) {
+        const data = await response.json();
+        setSearchResults(data);
+        if (data && data.length === 0) {
+          activateAlert(
+            "info",
+            "Nenhum Sistema foi encontrado. Favor revisar os critérios da sua pesquisa!"
+          );
+        }
       }
     } catch (error) {
       console.error(error);
