@@ -95,8 +95,8 @@ const SearchResultsTable = ({ searchResults }: SearchResultsTableProps) => {
           },
         }}
         pagination={{
-          enabled: true,
-          limit: 4,
+          enabled: searchResults.length > 5 ? true : false,
+          limit: 5,
           summary: true,
           buttonsCount: 10,
         }}
