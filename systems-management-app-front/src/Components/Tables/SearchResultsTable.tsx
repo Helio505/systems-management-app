@@ -94,12 +94,16 @@ const SearchResultsTable = ({ searchResults }: SearchResultsTableProps) => {
             color: "black",
           },
         }}
-        pagination={{
-          enabled: searchResults.length > 5 ? true : false,
-          limit: 5,
-          summary: true,
-          buttonsCount: 10,
-        }}
+        pagination={
+          searchResults.length > 5
+            ? {
+                enabled: true,
+                limit: 5,
+                summary: true,
+                buttonsCount: 10,
+              }
+            : false
+        }
         // search={true}
         // fixedHeader={true}
         // height={"700px"}
