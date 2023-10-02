@@ -25,8 +25,6 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/System"
-        "400":
-          description: Request inválido.
         "404":
           description: Sistemas não foram encontrados.
     post:
@@ -39,14 +37,12 @@ paths:
             schema:
               $ref: "#/components/schemas/System"
       responses:
-        "200":
+        "201":
           description: Sistema criado com Sucesso.
           content:
             application/json:
               schema:
-                type: object
-                items:
-                  $ref: "#/components/schemas/System"
+                $ref: "#/components/schemas/System"
         "400":
           description: Request inválido.
   /systems/{id}:
@@ -75,7 +71,7 @@ paths:
           description: Request inválido.
         "404":
           description: Sistema não foi encontrado.
-    put:
+    patch:
       tags:
         - systems
       summary: Modifica um sistema especifico.
