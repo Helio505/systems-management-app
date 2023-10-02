@@ -34,7 +34,7 @@ const Header = ({ children }: HeaderProps) => {
               height: "100%",
             }}
           >
-            {children}
+            <h1 className="display-5 fw-bold">{children}</h1>
           </div>
         </Col>
       </Row>

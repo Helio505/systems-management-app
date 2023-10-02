@@ -50,7 +50,17 @@ function SystemSearch() {
     if (acronym) {
       queryString += `acronym=${acronym}&`;
     }
+
+    const emailRegex = /^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
+    const isEmailValid = (email: string): boolean => {
+      return emailRegex.test(email);
+    };
+
     if (email) {
+      if (!isEmailValid(email)) {
+        activateAlert("warning", "E-mail inválido.");
+        return;
+      }
       queryString += `email=${email}`;
     }
 
@@ -63,6 +73,12 @@ function SystemSearch() {
       const systems = await querySystems(queryString);
       const data = await systems.json();
       setSearchResults(data);
+      if (data && data.length === 0) {
+        activateAlert(
+          "warning",
+          "Nenhum Sistema foi encontrado. Favor revisar os critérios da sua pesquisa!"
+        );
+      }
     } catch (error) {
       console.error(error);
       activateAlert("danger", "Erro ao consultar sistemas!");
@@ -80,14 +96,12 @@ function SystemSearch() {
     <React.Fragment>
       <div className="page-content h-100 w-100">
         <Container fluid>
-          <Header>
-            <h1 className="display-5 fw-bold">Pesquisar Sistemas</h1>
-          </Header>
+          <Header>Pesquisar Sistemas</Header>
 
           <MainContent>
             <Card>
-              <CardHeader>
-                <h3 style={{ color: "green", fontWeight: "bold" }}>
+              <CardHeader style={{ backgroundColor: "white" }}>
+                <h3 style={{ color: "green", fontWeight: "bold", margin: 0 }}>
                   Filtro de Consulta
                 </h3>
               </CardHeader>

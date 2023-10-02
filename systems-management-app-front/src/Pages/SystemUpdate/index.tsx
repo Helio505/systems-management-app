@@ -93,7 +93,7 @@ function SystemUpdate() {
       const response = await updateSystem(previousSystem.id, newSystem);
       const data = await response.json();
       setPreviousSystem(data);
-      activateAlert("success", "Sistema atualizado com sucesso!");
+      activateAlert("success", "Operação realizado com sucesso!");
       // after 2s, redirect to home
       setTimeout(() => {
         navigate("/");
@@ -102,22 +102,18 @@ function SystemUpdate() {
       console.error(error);
       activateAlert("danger", "Erro ao atualizar o sistema!");
     }
-
-    // TODO if sucess, redirect after 2s
   };
 
   return (
     <React.Fragment>
       <div className="page-content h-100 w-100">
         <Container fluid>
-          <Header>
-            <h1 className="display-5 fw-bold">Manter Sistema</h1>
-          </Header>
+          <Header>Manter Sistema</Header>
 
           <MainContent>
             <Card>
-              <CardHeader>
-                <h3 style={{ color: "green", fontWeight: "bold" }}>
+              <CardHeader style={{ backgroundColor: "white" }}>
+                <h3 style={{ color: "green", fontWeight: "bold", margin: 0 }}>
                   Dados do Sistema
                 </h3>
               </CardHeader>
@@ -201,8 +197,8 @@ function SystemUpdate() {
             </Card>
 
             <Card>
-              <CardHeader>
-                <h3 style={{ color: "green", fontWeight: "bold" }}>
+              <CardHeader style={{ backgroundColor: "white" }}>
+                <h3 style={{ color: "green", fontWeight: "bold", margin: 0 }}>
                   Controle do Sistema
                 </h3>
               </CardHeader>
