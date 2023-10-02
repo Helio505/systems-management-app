@@ -18,7 +18,9 @@
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4",
     "yup": "^1.3.2",
-    "react-router-dom": "^6.8.1"
+    "react-router-dom": "^6.8.1",
+    "gridjs": "^6.0.6",
+    "gridjs-react": "^6.0.1"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import {
+  Alert,
   Button,
   Card,
   CardBody,
@@ -17,14 +18,19 @@ import Header from "../../Components/Layouts/Header";
 import Footer from "../../Components/Layouts/Footer";
 import MainContent from "../../Components/Layouts/MainContent";
 import SearchResultsTable from "../../Components/Tables/SearchResultsTable";
+import useAlert from "../../Components/Hooks/Alert";
+import { System } from "../../Helpers/types";
 
 function SystemSearch() {
   const navigate = useNavigate();
+  const { alertObj, activateAlert } = useAlert();
 
   const [description, setDescription] = React.useState<string>("");
   const [acronym, setAcronym] = React.useState<string>("");
   const [email, setEmail] = React.useState<string>("");
-  const [searchResults, setSearchResults] = React.useState<any[]>([]);
+  const [searchResults, setSearchResults] = React.useState<null | System[]>(
+    null
+  );
 
   const handleGetAllSystems = async () => {
     try {
@@ -49,7 +55,7 @@ function SystemSearch() {
     }
 
     if (queryString === "?") {
-      alert("Preencha ao menos um campo para realizar a consulta!");
+      activateAlert("warning", "Informe ao menos um filtro para a pesquisa!");
       return;
     }
 
@@ -59,6 +65,7 @@ function SystemSearch() {
       setSearchResults(data);
     } catch (error) {
       console.error(error);
+      activateAlert("danger", "Erro ao consultar sistemas!");
     }
   };
 
@@ -66,7 +73,7 @@ function SystemSearch() {
     setDescription("");
     setAcronym("");
     setEmail("");
-    setSearchResults([]);
+    setSearchResults(null);
   };
 
   return (
@@ -85,6 +92,9 @@ function SystemSearch() {
                 </h3>
               </CardHeader>
               <CardBody>
+                <Alert isOpen={alertObj.isVisible} color={alertObj.type}>
+                  {alertObj.message}
+                </Alert>
                 <Col
                   style={{
                     display: "flex",
@@ -134,7 +144,7 @@ function SystemSearch() {
                 {searchResults && searchResults.length > 0 ? (
                   <SearchResultsTable searchResults={searchResults} />
                 ) : (
-                  <Card className="mb-3 bg-light border-0">
+                  <Card className="mb-3 bg-light border-0 m-3">
                     <CardBody>
                       <h3>
                         Nenhum sistema encontrado com os filtros informados!

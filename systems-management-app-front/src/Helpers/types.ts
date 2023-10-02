@@ -4,7 +4,7 @@
 // }
 
 export type System = {
-  id?: string;
+  id?: number;
   createdAt?: string;
   updatedAt?: string;
 
