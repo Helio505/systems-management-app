@@ -26,4 +26,4 @@ COPY wait-for-it.sh ./
 RUN chmod +x wait-for-it.sh
 
 # Configure o comando para esperar pelo banco de dados e, em seguida, iniciar a aplicação
-CMD /usr/src/app/wait-for-it.sh database:3306 -t 30 -- npx prisma migrate dev && npm start
+CMD /usr/src/app/wait-for-it.sh database:3306 -t 90 -- npx prisma migrate dev && npm start
