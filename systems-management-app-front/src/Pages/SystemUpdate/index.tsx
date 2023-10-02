@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
+  Alert,
   Button,
   Card,
   CardBody,
@@ -18,10 +19,12 @@ import CharsCounter from "../../Components/CharsCounter";
 import { System } from "../../Helpers/types";
 import { updateSystem } from "../../Components/SystemCrud";
 import convertDate from "../../Helpers/convertDate";
+import useAlert from "../../Components/Hooks/Alert";
 
 function SystemUpdate() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { alertObj, activateAlert } = useAlert();
 
   const [previousSystem, setPreviousSystem] = React.useState<System | null>(
     null
@@ -35,7 +38,6 @@ function SystemUpdate() {
     justification: "",
   });
 
-  // TODO reativar
   useEffect(() => {
     if (!location.state) {
       navigate("/");
@@ -90,8 +92,15 @@ function SystemUpdate() {
     try {
       const response = await updateSystem(previousSystem.id, newSystem);
       const data = await response.json();
+      setPreviousSystem(data);
+      activateAlert("success", "Sistema atualizado com sucesso!");
+      // after 2s, redirect to home
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
     } catch (error) {
       console.error(error);
+      activateAlert("danger", "Erro ao atualizar o sistema!");
     }
 
     // TODO if sucess, redirect after 2s
@@ -113,6 +122,9 @@ function SystemUpdate() {
                 </h3>
               </CardHeader>
               <CardBody>
+                <Alert isOpen={alertObj.isVisible} color={alertObj.type}>
+                  {alertObj.message}
+                </Alert>
                 <Col
                   style={{
                     display: "flex",

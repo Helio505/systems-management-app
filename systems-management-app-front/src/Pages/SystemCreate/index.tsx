@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
+  Alert,
   Button,
   Card,
   CardBody,
@@ -16,9 +17,11 @@ import Header from "../../Components/Layouts/Header";
 import MainContent from "../../Components/Layouts/MainContent";
 import { System } from "../../Helpers/types";
 import { createSystem } from "../../Components/SystemCrud";
+import useAlert from "../../Components/Hooks/Alert";
 
 function SystemCreate() {
   const navigate = useNavigate();
+  const { alertObj, activateAlert } = useAlert();
 
   const [newSystem, setNewSystem] = useState<System>({
     description: "",
@@ -46,8 +49,14 @@ function SystemCreate() {
     try {
       const response = await createSystem(newSystem);
       const data = await response.json();
+      activateAlert("success", "Sistema criado com sucesso!");
+      // after 2s, redirect to home
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
     } catch (error) {
       console.error(error);
+      activateAlert("danger", "Erro ao criar o sistema!");
     }
 
     // TODO if sucess, redirect after 2s
@@ -68,6 +77,9 @@ function SystemCreate() {
                 </h3>
               </CardHeader>
               <CardBody>
+                <Alert isOpen={alertObj.isVisible} color={alertObj.type}>
+                  {alertObj.message}
+                </Alert>
                 <Col
                   style={{
                     display: "flex",
