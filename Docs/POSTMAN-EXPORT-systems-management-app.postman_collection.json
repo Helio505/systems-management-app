@@ -1,0 +1,323 @@
+{
+	"info": {
+		"_postman_id": "ceabb4cb-e898-4d14-9a4f-a8e8166217d3",
+		"name": "systems-management-app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25929494"
+	},
+	"item": [
+		{
+			"name": "query systems",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/systems/?acronym=AAA",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"systems",
+						""
+					],
+					"query": [
+						{
+							"key": "description",
+							"value": "123",
+							"disabled": true
+						},
+						{
+							"key": "email",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "acronym",
+							"value": "AAA"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all systems",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/systems",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"systems"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get system by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/systems/1",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"systems",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create system",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"description\": \"Sistema de Gestão de Pessoas\",\r\n  \"acronym\": \"AAA\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/systems",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"systems"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "create system",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"description\": \"123\",\r\n  \"acronym\": \"123\",\r\n  \"email\": \"example@hotmail.com\",\r\n  \"url\": \"http://www.example.com.br\",\r\n  \"status\": \"ATIVO\",\r\n  \"user\": \"123\",\r\n  \"justification\": \"Criação do sistema\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/systems",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"systems"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "create system",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"description\": \"Sistema de Gestão de Pessoas\",\r\n  \"acronym\": \"AAA\",\r\n  \"email\": \"example@hotmail.com\",\r\n  \"url\": \"http://www.example.com.br\",\r\n  \"status\": \"ATIVO\",\r\n  \"user\": \"123\",\r\n  \"justification\": \"Criação do sistema\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/systems",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"systems"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "create system",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"description\": \"444\",\r\n  \"acronym\": \"444\",\r\n  \"email\": \"444\",\r\n  \"url\": \"http://www.example.com.br\",\r\n  \"status\": \"ATIVO\",\r\n  \"user\": \"Marcos Faria\",\r\n  \"justification\": \"Criação do sistema\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/systems",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"systems"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "create system Copy",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"description\": \"444\",\r\n  \"acronym\": \"444\",\r\n  \"email\": \"123\",\r\n  \"url\": \"http://www.example.com.br\",\r\n  \"status\": \"ATIVO\",\r\n  \"user\": \"Marcos Faria\",\r\n  \"justification\": \"Criação do sistema\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/systems",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"systems"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "create system Copy 2",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"description\": \"444\",\r\n  \"acronym\": \"444\",\r\n  \"email\": \"123\",\r\n  \"url\": \"http://www.example.com.br\",\r\n  \"status\": \"CANCELADO\",\r\n  \"user\": \"Marcos Faria\",\r\n  \"justification\": \"Criação do sistema\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/systems",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"systems"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "update system",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"description\": \"Sistema de Gestão de Pessoas\",\r\n  \"acronym\": \"SGP\",\r\n  \"email\": \"example@hotmail.com\",\r\n  \"url\": \"http://www.example.com.br\",\r\n  \"status\": \"ATIVO\",\r\n  \"user\": \"Marcos Faria\",\r\n  \"justification\": \"Criação do sistema\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/systems/2",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"systems",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete system",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/systems/1",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"systems",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_URL",
+			"value": "http://localhost:3333",
+			"type": "string"
+		}
+	]
+}

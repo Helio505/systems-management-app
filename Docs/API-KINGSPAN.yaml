@@ -1,0 +1,207 @@
+openapi: "3.0.0"
+info:
+  version: "1.0.0"
+  title: "Systems management api"
+  description: "Systems management api"
+  contact:
+    name: "Helio"
+servers:
+  - url: http://127.0.0.1:3333
+tags:
+  - name: systems
+    description: Tudo que é relacionado a sistemas.
+paths:
+  /systems:
+    get:
+      tags:
+        - systems
+      summary: Retorna todos os sistemas
+      responses:
+        "200":
+          description: Sucesso em retornar todos os sistemas.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/System"
+        "400":
+          description: Request inválido.
+        "404":
+          description: Sistemas não foram encontrados.
+    post:
+      tags:
+        - systems
+      summary: Cria um novo sistema.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/System"
+      responses:
+        "200":
+          description: Sistema criado com Sucesso.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: "#/components/schemas/System"
+        "400":
+          description: Request inválido.
+  /systems/{id}:
+    get:
+      tags:
+        - systems
+      summary: Retorna um sistema especifico.
+      parameters:
+        - name: id
+          in: path
+          description: Id do sistema desejado.
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: Sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/System"
+        "400":
+          description: Request inválido.
+        "404":
+          description: Sistema não foi encontrado.
+    put:
+      tags:
+        - systems
+      summary: Modifica um sistema especifico.
+      parameters:
+        - name: id
+          in: path
+          description: Id do
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        description: O request contem as informações que serão modificadas. Só é necessário colocar as informações que serão modificadas.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/System"
+      responses:
+        "200":
+          description: Sucesso. Retorna o sistema após ser modificado.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/System"
+        "400":
+          description: Request inválido.
+        "404":
+          description: Sistema não foi encontrado.
+    delete:
+      tags:
+        - systems
+      summary: Deleta um sistema especifico.
+      parameters:
+        - name: id
+          in: path
+          description: Id do sistema desejado.
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: Sucesso. Retorna o sistema deletado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/System"
+        "400":
+          description: Request inválido.
+        "404":
+          description: Sistema não foi encontrado.
+  /systems/:
+    get:
+      tags:
+        - systems
+      summary: Retorna todos os sistemas que possuem o parametro query escolhido
+      description: Retorna todos os sistemas que possuem o parametro query escolhido. Os retorna em um array.
+      parameters:
+        - name: description
+          in: query
+          description: descrição do sistema
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: Batcave Security System
+        - name: acronym
+          in: query
+          description: sigla do sistema
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: BSS
+        - name: email
+          in: query
+          description: email do sistema
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: batman@yahoo.com
+      responses:
+        "200":
+          description: Busca feita com sucesso.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/System"
+        "400":
+          description: Request inválido.
+        "404":
+          description: O sistema buscado não foi encontrado.
+components:
+  schemas:
+    System:
+      type: object
+      required:
+        - description
+        - acronym
+      properties:
+        description:
+          type: string
+          example: "Automatic Autoring System"
+        acronym:
+          type: string
+          example: "AAS"
+        email:
+          type: string
+          example: "example@hotmail.com"
+        status:
+          type: string
+          example: "CANCELADO"
+          default: "ATIVO"
+        user:
+          type: string
+          example: "Pedro"
+        justification:
+          type: string
+          example: "Modificando status do sistema."
