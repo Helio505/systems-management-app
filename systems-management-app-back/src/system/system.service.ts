@@ -59,10 +59,12 @@ export class SystemService {
     }
 
     if (email) {
-      systems = systems.filter(
-        (system) =>
-          system.email.toLocaleLowerCase() === email.toLocaleLowerCase(),
-      );
+      systems = systems.filter((system) => {
+        const systemEmail = system.email
+          ? system.email.toLocaleLowerCase()
+          : null;
+        return systemEmail.includes(email.toLocaleLowerCase());
+      });
     }
 
     // Check if systems were found
