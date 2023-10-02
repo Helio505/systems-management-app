@@ -28,7 +28,7 @@ export class SystemService {
     // Find all systems
     const systems = await this.prisma.system.findMany();
     // Check if systems were found
-    if (!systems) {
+    if (!systems || systems.length === 0) {
       throw new NotFoundException("Systems not found");
     }
 
