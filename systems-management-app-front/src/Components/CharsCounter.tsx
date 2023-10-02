@@ -1,3 +1,5 @@
+import React from "react";
+
 type CharsCounterProps = {
   text: string;
   limit: number;
@@ -17,4 +19,4 @@ const CharsCounter = ({ text, limit }: CharsCounterProps) => {
   );
 };
 
-export default CharsCounter;
+export default React.memo(CharsCounter);
