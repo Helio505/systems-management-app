@@ -19,3 +19,15 @@
 - O frontend estará disponível na porta 3000.
 - O banco de dados estará disponível na porta 3307 fora do container.
 - `prisma migrate dev` é executado ao criar o BD, logo, ele inicia vazio.
+
+### Tecnologias utilizadas
+#### Frontend
+- React
+- Typescript
+- Docker
+#### Backend
+- Node.js
+- Nest.js
+- Prisma (ORM), utilizando MySQL
+- Typescript
+- Docker
