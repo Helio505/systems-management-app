@@ -27,9 +27,13 @@ function SystemSearch() {
   const [searchResults, setSearchResults] = React.useState<any[]>([]);
 
   const handleGetAllSystems = async () => {
-    const response = await getAllSystems();
-    const data = await response.json();
-    setSearchResults(data);
+    try {
+      const response = await getAllSystems();
+      const data = await response.json();
+      setSearchResults(data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleQuerySystems = async () => {
