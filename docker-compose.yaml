@@ -4,9 +4,9 @@ services:
     extends:
       file: systems-management-app-front/docker-compose.yaml
       service: front
-    depends_on:
-      - api
-      - database
+    # depends_on:
+    #   - api
+    #   - database
   database:
     extends:
       file: systems-management-app-back/docker-compose.yaml
@@ -15,8 +15,8 @@ services:
     extends:
       file: systems-management-app-back/docker-compose.yaml
       service: api
-    depends_on:
-      - database
+    # depends_on:
+    #   - database
 networks:
   kingspan-network:
     driver: bridge
