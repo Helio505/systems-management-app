@@ -5,7 +5,8 @@
 ## Como executar o projeto
 
 1. Verificar se docker e docker-compose estão instalados.
-2. Executar os containers docker, com o comando `docker compose up -d --build`.
+2. Remover containeres antigos: ```docker-compose down```.
+3. Fazer build dos containeres da aplicação: ```docker-compose up --build```.
    obs. Tem que esperar a criação dos containeres terminar. Quando estiverem prontos, a aplicação estará disponível em `http://localhost:3000/`.
 
 <!-- ### Como popular o banco de dados com dados de teste
@@ -18,7 +19,7 @@
 - A api estará disponível na porta 3333.
 - O frontend estará disponível na porta 3000.
 - O banco de dados estará disponível na porta 3307 fora do container.
-- `prisma migrate dev` é executado ao criar o BD, logo, ele inicia vazio.
+- O container da database, está conectado a um volume, portanto, mesmo após a remoção do container, os dados persistirão.
 
 ### Tecnologias utilizadas
 
