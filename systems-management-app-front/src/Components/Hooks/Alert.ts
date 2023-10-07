@@ -7,6 +7,11 @@ type alertObjType = {
   timer: number;
 };
 
+/**
+ * Custom hook to handle alerts.
+ * @example const { alertObj, activateAlert } = useAlert();
+ * activateAlert("success", "Usuário cadastrado com sucesso!"); // exemplo:
+ */
 const useAlert = () => {
   // State:
   const [alertObj, setAlertObj] = useState<alertObjType>({
@@ -26,7 +31,12 @@ const useAlert = () => {
     });
   };
 
-  // Toggle alert function
+  /**
+   * Toggle alert function.
+   * @param type The color of the alert. Follows the predefined bootstrap colors.
+   * @param message The message to be displayed.
+   * @param timer The time in milliseconds, after witch the alert will be hidden.
+   */
   const activateAlert = (
     type: string,
     message: string,

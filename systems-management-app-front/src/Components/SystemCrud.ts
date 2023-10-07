@@ -1,8 +1,12 @@
 import { System } from "../Helpers/types";
 
 // const url = process.env.API_BASE_URL;
-const url = "http://localhost:3333";
+const url = process.env.API_BASE_URL || "http://localhost:3333";
 
+/**
+ * List all systems, filtered by query string.
+ * @example querySystems("?description=description1&acronym=acronym1&email=email1")
+ */
 export const querySystems = async (queryString: string | any) => {
   try {
     const response = await fetch(`${url}/systems/${queryString}`, {
@@ -19,6 +23,9 @@ export const querySystems = async (queryString: string | any) => {
   }
 };
 
+/**
+ * List all systems.
+ */
 export const getAllSystems = async () => {
   try {
     const response = await fetch(`${url}/systems`, {
@@ -35,6 +42,10 @@ export const getAllSystems = async () => {
   }
 };
 
+/**
+ * Get a system by id.
+ * @example getSystemById(1)
+ */
 export const getSystemById = async (id: string | number) => {
   try {
     const response = await fetch(`${url}/systems/${id}`, {
@@ -51,6 +62,10 @@ export const getSystemById = async (id: string | number) => {
   }
 };
 
+/**
+ * Create a new system.
+ * @example createSystem({description: "description1", acronym: "acronym1", email: "email1"})
+ */
 export const createSystem = async (system: System) => {
   try {
     const response = await fetch(`${url}/systems`, {
@@ -71,6 +86,10 @@ export const createSystem = async (system: System) => {
   }
 };
 
+/**
+ * Update a system.
+ * @example updateSystem(1, {description: "description1", acronym: "acronym1", email: "email1"})
+ */
 export const updateSystem = async (id: string | number, system: System) => {
   try {
     const response = await fetch(`${url}/systems/${id}`, {
@@ -91,6 +110,10 @@ export const updateSystem = async (id: string | number, system: System) => {
   }
 };
 
+/**
+ * Delete a system.
+ * @example deleteSystem(1)
+ */
 export const deleteSystem = async (id: string | number) => {
   try {
     const response = await fetch(`${url}/systems/${id}`, {
