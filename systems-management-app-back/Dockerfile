@@ -11,4 +11,4 @@ COPY wait-for-it.sh ./
 # Permição:
 RUN chmod +x wait-for-it.sh
 
-CMD /usr/src/app/wait-for-it.sh database:3306 -t 60 -- npx prisma migrate reset --force && npm start
+CMD /usr/src/app/wait-for-it.sh database:3306 -t 60 -- npx prisma migrate deploy && npm start
