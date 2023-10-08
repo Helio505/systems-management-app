@@ -26,4 +26,5 @@ services:
       - kingspan-network
 networks:
   kingspan-network:
+    container_name: kingspan-network
     driver: bridge
