@@ -45,7 +45,7 @@ export class UpdateSystemDto {
 
   @IsString()
   @IsNotEmpty()
-  @MaxLength(100)
+  @MaxLength(500)
   @IsOptional()
   justification: string;
 }
