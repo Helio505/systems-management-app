@@ -6,7 +6,8 @@ type CharsCounterProps = {
 };
 
 const CharsCounter = ({ text, limit }: CharsCounterProps) => {
-  if (text.length >= limit) {
+  // If the text length is equal to the limit, show message in blue:
+  if (text.length === limit) {
     return (
       <div
         style={{
@@ -18,7 +19,9 @@ const CharsCounter = ({ text, limit }: CharsCounterProps) => {
         Você atingiu o limite de caracteres!
       </div>
     );
-  } else {
+  }
+  // Else show message in green:
+  else {
     return (
       <div
         style={{
