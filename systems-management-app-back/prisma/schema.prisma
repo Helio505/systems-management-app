@@ -22,7 +22,7 @@ model System {
   url           String? @db.VarChar(50)
   status        Status  @default(ATIVO)
   user          String? @db.VarChar(100)
-  justification String? @db.VarChar(100)
+  justification String? @db.VarChar(500)
 }
 
 // status enum
