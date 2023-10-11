@@ -8,9 +8,15 @@ import {
   CardHeader,
   Col,
   Container,
+  FormFeedback,
+  FormGroup,
   Input,
   Label,
+  Form as ReactStrapForm,
+  Spinner,
 } from "reactstrap";
+import { useFormik } from "formik";
+import { object, string } from "yup";
 
 import Footer from "../../Components/Layouts/Footer";
 import Header from "../../Components/Layouts/Header";
@@ -30,88 +36,108 @@ function SystemUpdate() {
   const [previousSystem, setPreviousSystem] = React.useState<System | null>(
     null
   );
-  const [newSystem, setNewSystem] = React.useState<any>({
-    description: "",
-    acronym: "",
-    email: "",
-    url: "",
-    status: "",
-    justification: "",
-  });
 
+  // Checking the route state:
   useEffect(() => {
+    // If route state is empty, redirect to home
     if (!location.state) {
       navigate("/");
-    } else {
-      const systemFromRouteState = location.state.system;
-
-      // System before update
-      setPreviousSystem(systemFromRouteState);
-
-      // System after and during update
-      setNewSystem(systemFromRouteState);
-      setNewSystem((prevState: any) => ({
-        ...prevState,
-        justification: "",
-      }));
     }
-  }, []);
+    // If route state is not empty, get the prev system data
+    else {
+      setPreviousSystem(location.state.system);
+    }
+  }, [location, location.state, navigate]);
 
-  const handleUpdateSystem = async () => {
-    const { description, acronym, email, url, status, justification } =
-      newSystem;
+  // Function to make the final processing of the data, and send it to the API:
+  const handleUpdateSystem = async (newSystemValues: any) => {
+    // Remove fields that will not be included in the request:
+    delete newSystemValues.user;
+    delete newSystemValues.updatedAt;
+    delete newSystemValues.justificationLastUpdate;
 
-    if (!description || !acronym || !status || !justification) {
-      activateAlert("warning", "Dados obrigatórios não informados.");
-      return;
+    // Removing empty fields:
+    for (const key in newSystemValues) {
+      if (newSystemValues[key] === "") {
+        delete newSystemValues[key];
+      }
     }
 
-    if (email && !isEmailValid(email)) {
-      activateAlert("warning", "E-mail inválido.");
-      return;
-    }
-
-    // const confirm = window.confirm("Deseja realmente atualizar o sistema?");
-
-    if (!previousSystem) {
-      activateAlert("danger", "Sistema não encontrado");
-      return;
-    }
-
-    if (!previousSystem.id) {
-      activateAlert("danger", "Sistema não encontrado");
-      return;
-    }
-
-    // If user didn't change anything, don't update
-    if (
-      previousSystem.description === newSystem.description &&
-      previousSystem.acronym === newSystem.acronym &&
-      previousSystem.email === newSystem.email &&
-      previousSystem.url === newSystem.url &&
-      previousSystem.status === newSystem.status &&
-      newSystem.justification === ""
-    ) {
-      activateAlert("warning", "Nenhuma alteração foi realizada.");
-      return;
-    }
+    // // const confirm = window.confirm("Deseja realmente atualizar o sistema?");
+    // TODO: if no changes were made, block the update
+    // Getting the if of the system to be updated
+    // if (!previousSystem) {
+    //   activateAlert("danger", "Sistema não encontrado");
+    //   return;
+    // }
+    // if (!previousSystem.id) {
+    //   activateAlert("danger", "Sistema não encontrado");
+    //   return;
+    // }
 
     try {
-      const response = await updateSystem(previousSystem.id, newSystem);
+      const response = await updateSystem(
+        location.state.system.id,
+        newSystemValues
+      );
       if (response && response.ok) {
-        const data = await response.json();
-        setPreviousSystem(data);
         activateAlert("success", "Operação realizada com sucesso!");
-        // after 2s, redirect to home
+        // after 1s redirect to home
         setTimeout(() => {
           navigate("/");
-        }, 2000);
+        }, 1000);
       }
     } catch (error) {
       console.error(error);
       activateAlert("danger", "Erro ao atualizar o sistema!");
     }
   };
+
+  const { values, handleBlur, handleChange, handleSubmit, errors, touched } =
+    useFormik({
+      // Storage for form values
+      initialValues: {
+        description: previousSystem?.description || "",
+        acronym: previousSystem?.acronym || "",
+        email: previousSystem?.email || "",
+        url: previousSystem?.url || "",
+        status: previousSystem?.status || "",
+        user: previousSystem?.user || "",
+        updatedAt: convertDate(previousSystem?.updatedAt) || "",
+        justificationLastUpdate: previousSystem?.justification || "",
+        justification: "", // new justification
+      },
+
+      // Validation schema
+      validationSchema: object({
+        description: string()
+          .required("Descrição é obrigatória")
+          .max(100, "Descrição deve ter no máximo 100 caracteres"),
+        acronym: string()
+          .required("Sigla é obrigatória")
+          .max(10, "Sigla deve ter no máximo 10 caracteres"),
+        email: string()
+          .optional()
+          .email("Email inválido")
+          .max(100, "Email deve ter no máximo 100 caracteres"),
+        url: string()
+          .optional()
+          .max(50, "URL deve ter no máximo 50 caracteres"),
+        status: string().oneOf(["ATIVO", "CANCELADO"], "Status inválido"),
+        justification: string()
+          .required("Justificativa é obrigatória")
+          .max(500, "Justificativa deve ter no máximo 500 caracteres"),
+      }),
+      // Submit function
+      onSubmit: (values) => {
+        handleUpdateSystem(values);
+      },
+      // Formik options
+      validateOnBlur: false,
+      validateOnChange: true,
+      validateOnMount: false,
+      enableReinitialize: true,
+    });
 
   return (
     <React.Fragment>
@@ -120,194 +146,307 @@ function SystemUpdate() {
           <Header>Manter Sistema</Header>
 
           <MainContent>
-            <Card>
-              <CardHeader style={{ backgroundColor: "white" }}>
-                <h3 style={{ color: "green", fontWeight: "bold", margin: 0 }}>
-                  Dados do Sistema
-                </h3>
-              </CardHeader>
-              <CardBody>
-                <Alert isOpen={alertObj.isVisible} color={alertObj.type}>
-                  {alertObj.message}
-                </Alert>
-                <Col
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                    width: "100%",
-                  }}
-                >
-                  <Col className="mt-3 mb-3 d-flex justify-content-center">
-                    <Label className="w-50 ms-3 fs-4 fw-bold border-bottom">
+            <ReactStrapForm onSubmit={handleSubmit}>
+              <Card>
+                <CardHeader style={{ backgroundColor: "white" }}>
+                  <h3 style={{ color: "green", fontWeight: "bold", margin: 0 }}>
+                    Dados do Sistema
+                  </h3>
+                </CardHeader>
+                <CardBody>
+                  <Alert isOpen={alertObj.isVisible} color={alertObj.type}>
+                    {alertObj.message}
+                  </Alert>
+
+                  <FormGroup row className="ms-3 mb-3">
+                    <Label
+                      for="description"
+                      size="lg"
+                      sm={6}
+                      className="fs-4 fw-bold border-bottom"
+                    >
                       Descrição <span className="text-danger">*</span>
                     </Label>
-                    <Input
-                      type="text"
-                      className="w-50 mx-3"
-                      bsSize="lg"
-                      maxLength={100}
-                      value={newSystem.description}
-                      onChange={(e) =>
-                        setNewSystem({
-                          ...newSystem,
-                          description: e.target.value,
-                        })
-                      }
-                    />
-                  </Col>
-                  <Col className="mb-3 d-flex justify-content-center">
-                    <Label className="w-50 ms-3 fs-4 fw-bold border-bottom">
+                    <Col sm={6} className="mt-2">
+                      <Input
+                        type="text"
+                        id="description"
+                        name="description"
+                        bsSize="lg"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.description}
+                        invalid={
+                          touched.description && errors.description
+                            ? true
+                            : false
+                        }
+                      />
+                      <FormFeedback
+                        valid={touched.description && !errors.description}
+                      >
+                        {errors.description}
+                      </FormFeedback>
+                    </Col>
+                  </FormGroup>
+                  <FormGroup row className="ms-3 mb-3">
+                    <Label
+                      for="acronym"
+                      size="lg"
+                      sm={6}
+                      className="fs-4 fw-bold border-bottom"
+                    >
                       Sigla <span className="text-danger">*</span>
                     </Label>
-                    <Input
-                      type="text"
-                      className="w-50 mx-3"
-                      bsSize="lg"
-                      maxLength={10}
-                      value={newSystem.acronym}
-                      onChange={(e) =>
-                        setNewSystem({ ...newSystem, acronym: e.target.value })
-                      }
-                    />
-                  </Col>
-                  <Col className="mb-3 d-flex justify-content-center">
-                    <Label className="w-50 ms-3 fs-4 fw-bold border-bottom">
+                    <Col sm={6} className="mt-2">
+                      <Input
+                        type="text"
+                        id="acronym"
+                        name="acronym"
+                        bsSize="lg"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.acronym}
+                        invalid={
+                          touched.acronym && errors.acronym ? true : false
+                        }
+                      />
+                      <FormFeedback valid={touched.acronym && !errors.acronym}>
+                        {errors.acronym}
+                      </FormFeedback>
+                    </Col>
+                  </FormGroup>
+                  <FormGroup row className="ms-3 mb-3">
+                    <Label
+                      for="email"
+                      size="lg"
+                      sm={6}
+                      className="fs-4 fw-bold border-bottom"
+                    >
                       E-mail de atendimento do sistema
                     </Label>
-                    <Input
-                      type="email"
-                      className="w-50 mx-3"
-                      bsSize="lg"
-                      maxLength={100}
-                      value={newSystem.email}
-                      onChange={(e) =>
-                        setNewSystem({ ...newSystem, email: e.target.value })
-                      }
-                    />
-                  </Col>
-                  <Col className="mb-3 d-flex justify-content-center">
-                    <Label className="w-50 ms-3 fs-4 fw-bold border-bottom">
+                    <Col sm={6} className="mt-2">
+                      <Input
+                        type="text"
+                        id="email"
+                        name="email"
+                        bsSize="lg"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.email}
+                        invalid={touched.email && errors.email ? true : false}
+                      />
+                      <FormFeedback valid={touched.email && !errors.email}>
+                        {errors.email}
+                      </FormFeedback>
+                    </Col>
+                  </FormGroup>
+                  <FormGroup row className="ms-3 mb-3">
+                    <Label
+                      for="url"
+                      size="lg"
+                      sm={6}
+                      className="fs-4 fw-bold border-bottom"
+                    >
                       URL
                     </Label>
-                    <Input
-                      type="text"
-                      className="w-50 mx-3"
-                      bsSize="lg"
-                      maxLength={50}
-                      value={newSystem.url}
-                      onChange={(e) =>
-                        setNewSystem({ ...newSystem, url: e.target.value })
-                      }
-                    />
-                  </Col>
-                </Col>
-              </CardBody>
-            </Card>
-
-            <Card>
-              <CardHeader style={{ backgroundColor: "white" }}>
-                <h3 style={{ color: "green", fontWeight: "bold", margin: 0 }}>
-                  Controle do Sistema
-                </h3>
-              </CardHeader>
-              <CardBody>
-                <Col
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                    width: "100%",
-                  }}
-                >
-                  <Col className="mt-3 mb-3 d-flex justify-content-center">
-                    <Label className="w-50 ms-3 fs-4 fw-bold border-bottom">
-                      Status <span className="text-danger">*</span>
-                    </Label>
-                    <Input
-                      type="select"
-                      className="w-50 mx-3"
-                      bsSize="lg"
-                      value={newSystem.status}
-                      onChange={(e) =>
-                        setNewSystem({ ...newSystem, status: e.target.value })
-                      }
-                    >
-                      <option value="ATIVO">ATIVO</option>
-                      <option value="CANCELADO">CANCELADO</option>
-                    </Input>
-                  </Col>
-                  <Col className="mb-3 d-flex justify-content-center">
-                    <Label className="w-50 ms-3 fs-4 fw-bold border-bottom">
-                      Usuário responsável pela última alteração
-                    </Label>
-                    <Input
-                      type="text"
-                      className="w-50 mx-3"
-                      bsSize="lg"
-                      maxLength={100}
-                      disabled
-                      value={previousSystem?.user}
-                    />
-                  </Col>
-                  <Col className="mb-3 d-flex justify-content-center">
-                    <Label className="w-50 ms-3 fs-4 fw-bold border-bottom">
-                      Data da última alteração
-                    </Label>
-                    <Input
-                      type="email"
-                      className="w-50 mx-3"
-                      bsSize="lg"
-                      disabled
-                      value={convertDate(previousSystem?.updatedAt) || ""}
-                    />
-                  </Col>
-                  <Col className="mb-3 d-flex justify-content-center">
-                    <Label className="w-50 ms-3 fs-4 fw-bold border-bottom">
-                      Justificativa da última alteração
-                    </Label>
-                    <Input
-                      type="textarea"
-                      className="w-50 mx-3"
-                      disabled
-                      style={{
-                        overflowY: "scroll",
-                      }}
-                      maxLength={500}
-                      bsSize="lg"
-                      value={previousSystem?.justification}
-                    />
-                  </Col>
-                  <Col className="mb-3 d-flex justify-content-center">
-                    <Label className="w-50 ms-3 fs-4 fw-bold border-bottom">
-                      Nova justificativa de alteração{" "}
-                      <span className="text-danger">*</span>
-                      <CharsCounter
-                        text={newSystem.justification}
-                        limit={500}
+                    <Col sm={6} className="mt-2">
+                      <Input
+                        type="text"
+                        id="url"
+                        name="url"
+                        bsSize="lg"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.url}
+                        invalid={touched.url && errors.url ? true : false}
                       />
-                    </Label>
+                      <FormFeedback valid={touched.url && !errors.url}>
+                        {errors.url}
+                      </FormFeedback>
+                    </Col>
+                  </FormGroup>
+                </CardBody>
+              </Card>
 
-                    <Input
-                      type="textarea"
-                      className="w-50 mx-3"
-                      style={{
-                        overflowY: "scroll",
-                      }}
-                      maxLength={500}
-                      bsSize="lg"
-                      value={newSystem.justification}
-                      onChange={(e) =>
-                        setNewSystem({
-                          ...newSystem,
-                          justification: e.target.value,
-                        })
-                      }
-                    />
-                  </Col>
-                </Col>
-              </CardBody>
-            </Card>
+              <Card>
+                <CardHeader style={{ backgroundColor: "white" }}>
+                  <h3 style={{ color: "green", fontWeight: "bold", margin: 0 }}>
+                    Controle do Sistema
+                  </h3>
+                </CardHeader>
+                <CardBody>
+                  <ReactStrapForm>
+                    <FormGroup row className="ms-3 mb-3">
+                      <Label
+                        for="status"
+                        size="lg"
+                        sm={6}
+                        className="fs-4 fw-bold border-bottom"
+                      >
+                        Status <span className="text-danger">*</span>
+                      </Label>
+                      <Col sm={6} className="mt-2">
+                        <Input
+                          type="select"
+                          id="status"
+                          name="status"
+                          bsSize="lg"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.status}
+                          invalid={
+                            touched.status && errors.status ? true : false
+                          }
+                        >
+                          <option value="ATIVO">ATIVO</option>
+                          <option value="CANCELADO">CANCELADO</option>
+                        </Input>
+                        <FormFeedback valid={touched.status && !errors.status}>
+                          {errors.status}
+                        </FormFeedback>
+                      </Col>
+                    </FormGroup>
+                    <FormGroup row className="ms-3 mb-3">
+                      <Label
+                        for="user-responsible"
+                        size="lg"
+                        sm={6}
+                        className="fs-4 fw-bold border-bottom"
+                      >
+                        Usuário responsável pela última alteração
+                      </Label>
+                      <Col sm={6} className="mt-2">
+                        <Input
+                          type="text"
+                          id="user-responsible"
+                          name="user-responsible"
+                          bsSize="lg"
+                          disabled
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.user}
+                          invalid={touched.user && errors.user ? true : false}
+                        />
+                        <FormFeedback valid={touched.user && !errors.user}>
+                          {errors.user}
+                        </FormFeedback>
+                      </Col>
+                    </FormGroup>
+                    <FormGroup row className="ms-3 mb-3">
+                      <Label
+                        for="updatedAt"
+                        size="lg"
+                        sm={6}
+                        className="fs-4 fw-bold border-bottom"
+                      >
+                        Data da ultima alteração
+                      </Label>
+
+                      <Col sm={6} className="mt-2">
+                        <Input
+                          type="text"
+                          id="updatedAt"
+                          name="updatedAt"
+                          bsSize="lg"
+                          disabled
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.updatedAt || ""}
+                          invalid={
+                            touched.updatedAt && errors.updatedAt ? true : false
+                          }
+                        />
+                        <FormFeedback
+                          valid={touched.updatedAt && !errors.updatedAt}
+                        >
+                          {errors.updatedAt}
+                        </FormFeedback>
+                      </Col>
+                    </FormGroup>
+                    <FormGroup row className="ms-3 mb-3">
+                      <Label
+                        for="justificationLastUpdate"
+                        size="lg"
+                        sm={6}
+                        className="fs-4 fw-bold border-bottom"
+                      >
+                        Justificativa da última alteração
+                      </Label>
+
+                      <Col sm={6} className="mt-2">
+                        <Input
+                          type="textarea"
+                          id="justificationLastUpdate"
+                          name="justificationLastUpdate"
+                          bsSize="lg"
+                          disabled
+                          style={{
+                            overflowY: "scroll",
+                          }}
+                          maxLength={500}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.justificationLastUpdate}
+                          invalid={
+                            touched.justificationLastUpdate &&
+                            errors.justificationLastUpdate
+                              ? true
+                              : false
+                          }
+                        />
+                        <FormFeedback
+                          valid={
+                            touched.justificationLastUpdate &&
+                            !errors.justificationLastUpdate
+                          }
+                        >
+                          {errors.justificationLastUpdate}
+                        </FormFeedback>
+                      </Col>
+                    </FormGroup>
+                    <FormGroup row className="ms-3 mb-3">
+                      <Label
+                        for="justification"
+                        size="lg"
+                        sm={6}
+                        className="fs-4 fw-bold border-bottom"
+                      >
+                        Nova justificativa de alteração{" "}
+                        <span className="text-danger">*</span>
+                        <CharsCounter text={values.justification} limit={500} />
+                      </Label>
+
+                      <Col sm={6} className="mt-2">
+                        <Input
+                          type="textarea"
+                          id="justification"
+                          name="justification"
+                          bsSize="lg"
+                          style={{
+                            overflowY: "scroll",
+                          }}
+                          maxLength={500}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.justification}
+                          invalid={
+                            touched.justification && errors.justification
+                              ? true
+                              : false
+                          }
+                        />
+                        <FormFeedback
+                          valid={touched.justification && !errors.justification}
+                        >
+                          {errors.justification}
+                        </FormFeedback>
+                      </Col>
+                    </FormGroup>
+                  </ReactStrapForm>
+                </CardBody>
+              </Card>
+            </ReactStrapForm>
           </MainContent>
 
           <Footer>
@@ -322,7 +461,7 @@ function SystemUpdate() {
             <Button
               className="btn-lg"
               color="success"
-              onClick={() => handleUpdateSystem()}
+              onClick={() => handleSubmit()}
             >
               Salvar
               <i className="ri-save-line ms-2"></i>
