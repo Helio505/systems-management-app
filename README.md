@@ -39,10 +39,10 @@
 
 ### Melhorias que podem ser implementadas no futuro
 
-- Utilizar yup para validar forms, e mostrar erros de validação nos inputs.
-- Implementar testes unitarios no front e no back.
-- Melhorar sistema de query parameters, para que os parametros de filtragem fiquem armazenados na url,
-  e o usuário não tenha que refazer a filtragem ao atualizar a página.
-- Melhorar estilização do header.
-- Implementar sistema de autenticação, para verificar qual usuário está fazendo a modificação em um sistema.
-- Implementar seeders para popular o banco de dados com dados de teste.
+- [x] Utilizar yup e formik para validar, controlar e mostrar erros de validação nos inputs.
+- [ ] Implementar testes unitarios no front e no back.
+- [x] Melhorar sistema de query parameters, para que os parametros de filtragem fiquem armazenados na url,
+  e o usuário não tenha que refazer a filtragem ao navegar para outra pagina e voltar.
+- [ ] Melhorar estilização do header.
+- [ ] Implementar sistema de autenticação, para verificar qual usuário está fazendo a modificação em um sistema.
+- [ ] Implementar seeders para popular o banco de dados com dados de teste.
