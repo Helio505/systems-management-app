@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Alert,
@@ -8,9 +8,14 @@ import {
   CardHeader,
   Col,
   Container,
+  FormFeedback,
+  FormGroup,
   Input,
   Label,
+  Form as ReactStrapForm,
 } from "reactstrap";
+import { useFormik } from "formik";
+import { object, string } from "yup";
 
 import Footer from "../../Components/Layouts/Footer";
 import Header from "../../Components/Layouts/Header";
@@ -18,42 +23,22 @@ import MainContent from "../../Components/Layouts/MainContent";
 import { System } from "../../Helpers/types";
 import { createSystem } from "../../Components/SystemCrud";
 import useAlert from "../../Components/Hooks/Alert";
-import isEmailValid from "../../Helpers/validateEmail";
 
 function SystemCreate() {
   const navigate = useNavigate();
   const { alertObj, activateAlert } = useAlert();
 
-  const [newSystem, setNewSystem] = useState<System>({
-    description: "",
-    acronym: "",
-    email: "",
-    url: "",
-  });
-
-  const handleCreateSystem = async () => {
-    let systemToCreate = newSystem;
-
-    if (!systemToCreate.description || !systemToCreate.acronym) {
-      activateAlert("warning", "Dados obrigatórios não informados.");
-      return;
+  const handleCreateSystem = async (system: any) => {
+    // Remove empty fields:
+    for (const key in system) {
+      if (system[key] === "") {
+        delete system[key];
+      }
     }
 
-    if (systemToCreate.email && !isEmailValid(systemToCreate.email)) {
-      activateAlert("warning", "E-mail inválido.");
-      return;
-    }
-
-    // remove os campos que não serão enviados
-    if (!systemToCreate.email) {
-      delete systemToCreate.email;
-    }
-    if (!systemToCreate.url) {
-      delete systemToCreate.url;
-    }
-
+    // Creating system:
     try {
-      const response = await createSystem(newSystem);
+      const response = await createSystem(system);
       if (response && response.ok) {
         activateAlert("success", "Operação realizada com sucesso!");
         // after 2s, redirect to home
@@ -66,6 +51,42 @@ function SystemCreate() {
       activateAlert("danger", "Erro ao criar o sistema!");
     }
   };
+
+  const { values, handleBlur, handleChange, handleSubmit, errors, touched } =
+    useFormik({
+      // Storage for form values
+      initialValues: {
+        description: "",
+        acronym: "",
+        email: "",
+        url: "",
+      },
+      // Validation schema
+      validationSchema: object({
+        description: string()
+          .required("Descrição é obrigatória")
+          .max(100, "Descrição deve ter no máximo 100 caracteres"),
+        acronym: string()
+          .required("Sigla é obrigatória")
+          .max(10, "Sigla deve ter no máximo 10 caracteres"),
+        email: string()
+          .optional()
+          .email("Email inválido")
+          .max(100, "Email deve ter no máximo 100 caracteres"),
+        url: string()
+          .optional()
+          .max(50, "URL deve ter no máximo 50 caracteres"),
+      }),
+      // Submit function
+      onSubmit: (values) => {
+        handleCreateSystem(values);
+      },
+      // Formik options
+      validateOnBlur: false,
+      validateOnChange: true,
+      validateOnMount: false,
+    });
+
   return (
     <React.Fragment>
       <div className="page-content h-100 w-100">
@@ -91,69 +112,122 @@ function SystemCreate() {
                     width: "100%",
                   }}
                 >
-                  <Col className="mt-3 mb-3 d-flex justify-content-center">
-                    <Label className="w-50 ms-3 fs-4 fw-bold border-bottom">
-                      Descrição <span className="text-danger">*</span>
-                    </Label>
-                    <Input
-                      type="text"
-                      className="w-50 mx-3"
-                      bsSize="lg"
-                      maxLength={100}
-                      value={newSystem.description}
-                      onChange={(e) =>
-                        setNewSystem({
-                          ...newSystem,
-                          description: e.target.value,
-                        })
-                      }
-                    />
-                  </Col>
-                  <Col className="mb-3 d-flex justify-content-center">
-                    <Label className="w-50 ms-3 fs-4 fw-bold border-bottom">
-                      Sigla <span className="text-danger">*</span>
-                    </Label>
-                    <Input
-                      type="text"
-                      className="w-50 mx-3"
-                      bsSize="lg"
-                      maxLength={10}
-                      value={newSystem.acronym}
-                      onChange={(e) =>
-                        setNewSystem({ ...newSystem, acronym: e.target.value })
-                      }
-                    />
-                  </Col>
-                  <Col className="mb-3 d-flex justify-content-center">
-                    <Label className="w-50 ms-3 fs-4 fw-bold border-bottom">
-                      E-mail de atendimento do sistema
-                    </Label>
-                    <Input
-                      type="email"
-                      className="w-50 mx-3"
-                      bsSize="lg"
-                      maxLength={100}
-                      value={newSystem.email}
-                      onChange={(e) =>
-                        setNewSystem({ ...newSystem, email: e.target.value })
-                      }
-                    />
-                  </Col>
-                  <Col className="mb-3 d-flex justify-content-center">
-                    <Label className="w-50 ms-3 fs-4 fw-bold border-bottom">
-                      URL
-                    </Label>
-                    <Input
-                      type="text"
-                      className="w-50 mx-3"
-                      bsSize="lg"
-                      maxLength={50}
-                      value={newSystem.url}
-                      onChange={(e) =>
-                        setNewSystem({ ...newSystem, url: e.target.value })
-                      }
-                    />
-                  </Col>
+                  <ReactStrapForm>
+                    <FormGroup row className="ms-3 mb-3">
+                      <Label
+                        for="description"
+                        size="lg"
+                        sm={6}
+                        className="fs-4 fw-bold border-bottom"
+                      >
+                        Descrição <span className="text-danger">*</span>
+                      </Label>
+                      <Col sm={6} className="mt-2">
+                        <Input
+                          type="text"
+                          id="description"
+                          name="description"
+                          // className="mt-2" //TODO mudar a mt
+                          bsSize="lg"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.description}
+                          invalid={
+                            touched.description && errors.description
+                              ? true
+                              : false
+                          }
+                        />
+                        <FormFeedback
+                          valid={touched.description && !errors.description}
+                        >
+                          {errors.description}
+                        </FormFeedback>
+                      </Col>
+                    </FormGroup>
+                    <FormGroup row className="ms-3 mb-3">
+                      <Label
+                        for="acronym"
+                        size="lg"
+                        sm={6}
+                        className="fs-4 fw-bold border-bottom"
+                      >
+                        Sigla <span className="text-danger">*</span>
+                      </Label>
+                      <Col sm={6} className="mt-2">
+                        <Input
+                          type="text"
+                          id="acronym"
+                          name="acronym"
+                          // className="mt-2"
+                          bsSize="lg"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.acronym}
+                          invalid={
+                            touched.acronym && errors.acronym ? true : false
+                          }
+                        />
+                        <FormFeedback
+                          valid={touched.acronym && !errors.acronym}
+                        >
+                          {errors.acronym}
+                        </FormFeedback>
+                      </Col>
+                    </FormGroup>
+                    <FormGroup row className="ms-3 mb-3">
+                      <Label
+                        for="email"
+                        size="lg"
+                        sm={6}
+                        className="fs-4 fw-bold border-bottom"
+                      >
+                        E-mail de atendimento do sistema
+                      </Label>
+                      <Col sm={6} className="mt-2">
+                        <Input
+                          type="text"
+                          id="email"
+                          name="email"
+                          // className="mt-2"
+                          bsSize="lg"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.email}
+                          invalid={touched.email && errors.email ? true : false}
+                        />
+                        <FormFeedback valid={touched.email && !errors.email}>
+                          {errors.email}
+                        </FormFeedback>
+                      </Col>
+                    </FormGroup>
+                    <FormGroup row className="ms-3 mb-3">
+                      <Label
+                        for="url"
+                        size="lg"
+                        sm={6}
+                        className="fs-4 fw-bold border-bottom"
+                      >
+                        URL
+                      </Label>
+                      <Col sm={6} className="mt-2">
+                        <Input
+                          type="text"
+                          id="url"
+                          name="url"
+                          // className="mt-2"
+                          bsSize="lg"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.url}
+                          invalid={touched.url && errors.url ? true : false}
+                        />
+                        <FormFeedback valid={touched.url && !errors.url}>
+                          {errors.url}
+                        </FormFeedback>
+                      </Col>
+                    </FormGroup>
+                  </ReactStrapForm>
                 </Col>
               </CardBody>
             </Card>
@@ -171,7 +245,7 @@ function SystemCreate() {
             <Button
               className="btn-lg"
               color="success"
-              onClick={() => handleCreateSystem()}
+              onClick={() => handleSubmit()}
             >
               Salvar
               <i className="ri-save-line ms-2"></i>
