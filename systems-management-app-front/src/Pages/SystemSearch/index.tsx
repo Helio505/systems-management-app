@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import {
   Alert,
   Button,
@@ -8,8 +8,11 @@ import {
   CardHeader,
   Col,
   Container,
+  FormFeedback,
+  FormGroup,
   Input,
   Label,
+  Form as ReactStrapForm,
 } from "reactstrap";
 
 import "../../index.css";
@@ -21,14 +24,13 @@ import SearchResultsTable from "../../Components/Tables/SearchResultsTable";
 import useAlert from "../../Components/Hooks/Alert";
 import { System } from "../../Helpers/types";
 import isEmailValid from "../../Helpers/validateEmail";
+import { useFormik } from "formik";
+import { object, string } from "yup";
 
 function SystemSearch() {
   const navigate = useNavigate();
   const { alertObj, activateAlert } = useAlert();
-
-  const [description, setDescription] = React.useState<string>("");
-  const [acronym, setAcronym] = React.useState<string>("");
-  const [email, setEmail] = React.useState<string>("");
+  const [searchParams, setSearchParams] = useSearchParams();
   const [searchResults, setSearchResults] = React.useState<null | System[]>(
     null
   );
@@ -43,33 +45,39 @@ function SystemSearch() {
     }
   };
 
-  const handleQuerySystems = async () => {
-    let queryString = "?";
-    if (description) {
-      queryString += `description=${description}&`;
-    }
-    if (acronym) {
-      queryString += `acronym=${acronym}&`;
-    }
-
-    if (email) {
-      if (!isEmailValid(email)) {
-        activateAlert("warning", "E-mail inválido.");
-        return;
+  const handleQuerySystems = async (queryValues: any) => {
+    // If all values are "", then blocks search. Also, if a key is "", remove it from object.
+    let areAllValuesEmpty = true;
+    for (const key in queryValues) {
+      if (queryValues[key] !== "") {
+        areAllValuesEmpty = false;
+      } else {
+        // Delete the key from the object if the value is ""
+        delete queryValues[key];
       }
-      queryString += `email=${email}`;
     }
-
-    if (queryString === "?") {
-      activateAlert("warning", "Informe ao menos um filtro para a pesquisa!");
+    if (areAllValuesEmpty) {
+      activateAlert(
+        "warning",
+        "Preencha pelo menos um dos campos para realizar a pesquisa!"
+      );
       return;
     }
 
+    // Create a new URLSearchParams object
+    const queryParams = new URLSearchParams(queryValues);
+
+    // Use the new values to update the search parameters in the url
+    setSearchParams(queryParams);
+
+    // Attempt to query the systems
     try {
-      const response = await querySystems(queryString);
+      const strQueryParams = queryParams.toString();
+      const response = await querySystems(`?${strQueryParams}`);
       if (response && response.ok) {
         const data = await response.json();
         setSearchResults(data);
+        // If data exists, but is an empty array:
         if (data && data.length === 0) {
           activateAlert(
             "info",
@@ -83,12 +91,52 @@ function SystemSearch() {
     }
   };
 
-  const resetFields = () => {
-    setDescription("");
-    setAcronym("");
-    setEmail("");
+  const handleResetForms = () => {
+    // Reset url searchParams:
+    setSearchParams("");
+    // Reset formik form:
+    resetForm();
+    // Reset searchResults:
     setSearchResults(null);
   };
+
+  const {
+    values,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    errors,
+    touched,
+    resetForm,
+  } = useFormik({
+    initialValues: {
+      description: searchParams.get("description") || "",
+      acronym: searchParams.get("acronym") || "",
+      email: searchParams.get("email") || "",
+    },
+    // Validation schema
+    validationSchema: object({
+      description: string()
+        .optional()
+        .max(100, "Descrição deve ter no máximo 100 caracteres"),
+      acronym: string()
+        .optional()
+        .max(10, "Sigla deve ter no máximo 10 caracteres"),
+      email: string()
+        .optional()
+        .email("Email inválido")
+        .max(100, "Email deve ter no máximo 100 caracteres"),
+    }),
+    // Submit function
+    onSubmit: (values) => {
+      handleQuerySystems(values);
+    },
+    // Formik options
+    validateOnBlur: false,
+    validateOnChange: true,
+    validateOnMount: false,
+    enableReinitialize: true,
+  });
 
   return (
     <React.Fragment>
@@ -107,63 +155,107 @@ function SystemSearch() {
                 <Alert isOpen={alertObj.isVisible} color={alertObj.type}>
                   {alertObj.message}
                 </Alert>
-                <Col
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                    width: "100%",
-                  }}
-                >
-                  <Col className="mt-3 mb-3 d-flex justify-content-center">
-                    <Label className="w-50 ms-3 fs-4 fw-bold border-bottom">
+
+                <ReactStrapForm onSubmit={handleSubmit} className="pb-1">
+                  <FormGroup row className="ms-3 mb-3">
+                    <Label
+                      for="description"
+                      size="lg"
+                      sm={6}
+                      className="fs-4 fw-bold border-bottom"
+                    >
                       Descrição
                     </Label>
-                    <Input
-                      type="text"
-                      className="w-50 mx-3"
-                      bsSize="lg"
-                      onChange={(e) => setDescription(e.target.value)}
-                      value={description}
-                    />
-                  </Col>
-                  <Col className="mb-3 d-flex justify-content-center">
-                    <Label className="w-50 ms-3 fs-4 fw-bold border-bottom">
+                    <Col sm={6} className="mt-2">
+                      <Input
+                        type="text"
+                        id="description"
+                        name="description"
+                        bsSize="lg"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.description}
+                        invalid={
+                          touched.description && errors.description
+                            ? true
+                            : false
+                        }
+                      />
+                      <FormFeedback
+                        valid={touched.description && !errors.description}
+                      >
+                        {errors.description}
+                      </FormFeedback>
+                    </Col>
+                  </FormGroup>
+                  <FormGroup row className="ms-3 mb-3">
+                    <Label
+                      for="acronym"
+                      size="lg"
+                      sm={6}
+                      className="fs-4 fw-bold border-bottom"
+                    >
                       Sigla
                     </Label>
-                    <Input
-                      type="text"
-                      className="w-50 mx-3"
-                      bsSize="lg"
-                      onChange={(e) => setAcronym(e.target.value)}
-                      value={acronym}
-                    />
-                  </Col>
-                  <Col className="mb-3 d-flex justify-content-center">
-                    <Label className="w-50 ms-3 fs-4 fw-bold border-bottom">
+                    <Col sm={6} className="mt-2">
+                      <Input
+                        type="text"
+                        id="acronym"
+                        name="acronym"
+                        bsSize="lg"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.acronym}
+                        invalid={
+                          touched.acronym && errors.acronym ? true : false
+                        }
+                      />
+                      <FormFeedback valid={touched.acronym && !errors.acronym}>
+                        {errors.acronym}
+                      </FormFeedback>
+                    </Col>
+                  </FormGroup>
+                  <FormGroup row className="ms-3 mb-3">
+                    <Label
+                      for="email"
+                      size="lg"
+                      sm={6}
+                      className="fs-4 fw-bold border-bottom"
+                    >
                       E-mail de atendimento do sistema
                     </Label>
-                    <Input
-                      type="email"
-                      className="w-50 mx-3"
-                      bsSize="lg"
-                      onChange={(e) => setEmail(e.target.value)}
-                      value={email}
-                    />
-                  </Col>
-                </Col>
+                    <Col sm={6} className="mt-2">
+                      <Input
+                        type="text"
+                        id="email"
+                        name="email"
+                        bsSize="lg"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.email}
+                        invalid={touched.email && errors.email ? true : false}
+                      />
+                      <FormFeedback valid={touched.email && !errors.email}>
+                        {errors.email}
+                      </FormFeedback>
+                    </Col>
+                  </FormGroup>
+                </ReactStrapForm>
 
-                {searchResults && searchResults.length > 0 ? (
-                  <SearchResultsTable searchResults={searchResults} />
-                ) : (
-                  <Card className="mb-3 bg-light border-0 m-3">
-                    <CardBody>
-                      <h3>
-                        Nenhum sistema encontrado com os filtros informados!
-                      </h3>
-                    </CardBody>
-                  </Card>
-                )}
+                {
+                  // TODO separate into its own component
+                  searchResults && searchResults.length > 0 ? (
+                    <SearchResultsTable searchResults={searchResults} />
+                  ) : (
+                    <Card className="mb-3 bg-light border-0 m-3">
+                      <CardBody>
+                        <h3>
+                          Nenhum sistema encontrado com os filtros informados!
+                        </h3>
+                      </CardBody>
+                    </Card>
+                  )
+                }
               </CardBody>
             </Card>
           </MainContent>
@@ -172,9 +264,7 @@ function SystemSearch() {
             <Button
               className="me-2 btn-lg"
               color="success"
-              onClick={() => {
-                handleQuerySystems();
-              }}
+              onClick={() => handleSubmit()}
             >
               Pesquisar
               <i className="ri-search-line ms-2 align-middle"></i>
@@ -190,7 +280,7 @@ function SystemSearch() {
             <Button
               className="ms-2 mx-2 btn-lg"
               color="danger"
-              onClick={() => resetFields()}
+              onClick={() => handleResetForms()}
             >
               Limpar
               <i className="ri-close-circle-line ms-2 align-middle"></i>
