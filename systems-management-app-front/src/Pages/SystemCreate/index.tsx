@@ -112,7 +112,7 @@ function SystemCreate() {
                     width: "100%",
                   }}
                 >
-                  <ReactStrapForm>
+                  <ReactStrapForm className="pb-1 me-3 ms-1">
                     <FormGroup row className="ms-3 mb-3">
                       <Label
                         for="description"

@@ -124,7 +124,6 @@ function SystemSearch() {
         .max(10, "Sigla deve ter no máximo 10 caracteres"),
       email: string()
         .optional()
-        .email("Email inválido")
         .max(100, "Email deve ter no máximo 100 caracteres"),
     }),
     // Submit function
@@ -156,7 +155,7 @@ function SystemSearch() {
                   {alertObj.message}
                 </Alert>
 
-                <ReactStrapForm onSubmit={handleSubmit} className="pb-1">
+                <ReactStrapForm onSubmit={handleSubmit} className="pb-1 me-3 ms-1">
                   <FormGroup row className="ms-3 mb-3">
                     <Label
                       for="description"

@@ -153,7 +153,7 @@ function SystemUpdate() {
                     Dados do Sistema
                   </h3>
                 </CardHeader>
-                <CardBody>
+                <CardBody className="me-3 ms-1">
                   <Alert isOpen={alertObj.isVisible} color={alertObj.type}>
                     {alertObj.message}
                   </Alert>
@@ -275,7 +275,7 @@ function SystemUpdate() {
                     Controle do Sistema
                   </h3>
                 </CardHeader>
-                <CardBody>
+                <CardBody className="me-3 ms-1">
                   <ReactStrapForm>
                     <FormGroup row className="ms-3 mb-3">
                       <Label
