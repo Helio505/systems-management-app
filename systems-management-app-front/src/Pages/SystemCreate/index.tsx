@@ -28,11 +28,14 @@ function SystemCreate() {
   const navigate = useNavigate();
   const { alertObj, activateAlert } = useAlert();
 
-  const handleCreateSystem = async (system: any) => {
+  const handleCreateSystem = async (system: System) => {
     // Remove empty fields:
     for (const key in system) {
-      if (system[key] === "") {
-        delete system[key];
+      if (
+        Object.prototype.hasOwnProperty.call(system, key) &&
+        system[key as keyof System] === ""
+      ) {
+        delete system[key as keyof System];
       }
     }
 

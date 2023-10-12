@@ -1,18 +1,18 @@
-// enum Status {
-//   ATIVO = "ATIVO",
-//   CANCELADO = "CANCELADO",
-// }
+export enum Status {
+  ATIVO = "ATIVO",
+  CANCELADO = "CANCELADO",
+}
 
 export type System = {
-  id?: number;
-  createdAt?: string;
-  updatedAt?: string;
+  readonly id?: number;
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
 
   description: string;
   acronym: string;
   email?: string;
   url?: string;
-  status?: "ATIVO" | "CANCELADO" | "";
+  status?: Status | string;
   user?: string;
   justification?: string;
 };

@@ -44,15 +44,30 @@ function SystemSearch() {
     }
   };
 
-  const handleQuerySystems = async (queryValues: any) => {
+  const handleQuerySystems = async (queryValues: {
+    description: string;
+    acronym: string;
+    email: string;
+  }) => {
     // If all values are "", then blocks search. Also, if a key is "", remove it from object.
     let areAllValuesEmpty = true;
+    // for (const key in queryValues) {
+    //   if (queryValues[key] !== "") {
+    //     areAllValuesEmpty = false;
+    //   } else {
+    //     // Delete the key from the object if the value is ""
+    //     delete queryValues[key];
+    //   }
+    // }
     for (const key in queryValues) {
-      if (queryValues[key] !== "") {
+      if (
+        Object.prototype.hasOwnProperty.call(queryValues, key) &&
+        queryValues[key as keyof typeof queryValues] !== ""
+      ) {
         areAllValuesEmpty = false;
       } else {
         // Delete the key from the object if the value is ""
-        delete queryValues[key];
+        delete queryValues[key as keyof typeof queryValues];
       }
     }
     if (areAllValuesEmpty) {
