@@ -63,17 +63,17 @@ function SystemUpdate() {
       }
     }
 
-    // // const confirm = window.confirm("Deseja realmente atualizar o sistema?");
+    // const confirm = window.confirm("Deseja realmente atualizar o sistema?");
     // TODO: if no changes were made, block the update
     // Getting the if of the system to be updated
-    // if (!previousSystem) {
-    //   activateAlert("danger", "Sistema não encontrado");
-    //   return;
-    // }
-    // if (!previousSystem.id) {
-    //   activateAlert("danger", "Sistema não encontrado");
-    //   return;
-    // }
+    if (!previousSystem) {
+      activateAlert("danger", "Sistema não encontrado");
+      return;
+    }
+    if (!previousSystem.id) {
+      activateAlert("danger", "Sistema não encontrado");
+      return;
+    }
 
     try {
       const response = await updateSystem(
@@ -153,12 +153,12 @@ function SystemUpdate() {
                     Dados do Sistema
                   </h3>
                 </CardHeader>
-                <CardBody className="me-3 ms-1">
+                <CardBody className="me-1 ms-1">
                   <Alert isOpen={alertObj.isVisible} color={alertObj.type}>
                     {alertObj.message}
                   </Alert>
 
-                  <FormGroup row className="ms-3 mb-3">
+                  <FormGroup row className="ms-1 mb-3">
                     <Label
                       for="description"
                       size="lg"
@@ -189,7 +189,7 @@ function SystemUpdate() {
                       </FormFeedback>
                     </Col>
                   </FormGroup>
-                  <FormGroup row className="ms-3 mb-3">
+                  <FormGroup row className="ms-1 mb-3">
                     <Label
                       for="acronym"
                       size="lg"
@@ -216,7 +216,7 @@ function SystemUpdate() {
                       </FormFeedback>
                     </Col>
                   </FormGroup>
-                  <FormGroup row className="ms-3 mb-3">
+                  <FormGroup row className="ms-1 mb-3">
                     <Label
                       for="email"
                       size="lg"
@@ -241,7 +241,7 @@ function SystemUpdate() {
                       </FormFeedback>
                     </Col>
                   </FormGroup>
-                  <FormGroup row className="ms-3 mb-3">
+                  <FormGroup row className="ms-1 mb-3">
                     <Label
                       for="url"
                       size="lg"
@@ -275,9 +275,9 @@ function SystemUpdate() {
                     Controle do Sistema
                   </h3>
                 </CardHeader>
-                <CardBody className="me-3 ms-1">
+                <CardBody className="ms-1 me-1">
                   <ReactStrapForm>
-                    <FormGroup row className="ms-3 mb-3">
+                    <FormGroup row className="ms-1 mb-3">
                       <Label
                         for="status"
                         size="lg"
@@ -307,7 +307,7 @@ function SystemUpdate() {
                         </FormFeedback>
                       </Col>
                     </FormGroup>
-                    <FormGroup row className="ms-3 mb-3">
+                    <FormGroup row className="ms-1 mb-3">
                       <Label
                         for="user-responsible"
                         size="lg"
@@ -333,7 +333,7 @@ function SystemUpdate() {
                         </FormFeedback>
                       </Col>
                     </FormGroup>
-                    <FormGroup row className="ms-3 mb-3">
+                    <FormGroup row className="ms-1 mb-3">
                       <Label
                         for="updatedAt"
                         size="lg"
@@ -364,7 +364,7 @@ function SystemUpdate() {
                         </FormFeedback>
                       </Col>
                     </FormGroup>
-                    <FormGroup row className="ms-3 mb-3">
+                    <FormGroup row className="ms-1 mb-3">
                       <Label
                         for="justificationLastUpdate"
                         size="lg"
@@ -405,7 +405,7 @@ function SystemUpdate() {
                         </FormFeedback>
                       </Col>
                     </FormGroup>
-                    <FormGroup row className="ms-3 mb-3">
+                    <FormGroup row className="ms-1 mb-3">
                       <Label
                         for="justification"
                         size="lg"
