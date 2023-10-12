@@ -53,3 +53,4 @@
   - [ ] Criar interfaces melhores para os componentes.
   - [ ] Criar interfaces melhores para os hooks.
   - [ ] Refatorar para utilizar a menor quantidade de `any` possivel.
+- [ ] Existe um problema, onde se a query conter somente números, uma conversão no back termina em erro.
