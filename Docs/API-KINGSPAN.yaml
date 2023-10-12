@@ -1,138 +1,144 @@
-openapi: "3.0.0"
+openapi: 3.1.0
 info:
-  version: "1.0.0"
-  title: "Systems management api"
-  description: "Systems management api"
+  version: 1.0.0
+  title: Systems management api docs
+  description: Documentação da API do sistema de manejamento de sistemas
   contact:
     name: "Helio"
 servers:
-  - url: http://127.0.0.1:3333
+  - url: http://localhost:3333
 tags:
   - name: systems
-    description: Tudo que é relacionado a sistemas.
+    description: Tudo que é relacionado a sistemas
 paths:
   /systems:
     get:
       tags:
         - systems
       summary: Retorna todos os sistemas
+      security: []
       responses:
-        "200":
-          description: Sucesso em retornar todos os sistemas.
+        200:
+          description: Sucesso em retornar todos os sistemas
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: "#/components/schemas/System"
-        "404":
-          description: Sistemas não foram encontrados.
+        404:
+          description: Sistemas não foram encontrados
     post:
       tags:
         - systems
-      summary: Cria um novo sistema.
+      summary: Cria um novo sistema
+      security: []
       requestBody:
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/System"
       responses:
-        "201":
-          description: Sistema criado com Sucesso.
+        201:
+          description: Sistema criado com Sucesso
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/System"
-        "400":
-          description: Request inválido.
+        400:
+          description: Request inválido
   /systems/{id}:
     get:
       tags:
         - systems
-      summary: Retorna um sistema especifico.
+      summary: Retorna um sistema especifico
+      security: []
       parameters:
         - name: id
           in: path
-          description: Id do sistema desejado.
+          description: Id do sistema desejado
           required: true
           style: simple
           explode: false
           schema:
             type: integer
-            example: 1
+            examples: [1]
       responses:
-        "200":
-          description: Sucesso.
+        200:
+          description: Sucesso
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/System"
-        "400":
-          description: Request inválido.
-        "404":
-          description: Sistema não foi encontrado.
+        400:
+          description: Request inválido
+        404:
+          description: Sistema não foi encontrado
     patch:
       tags:
         - systems
-      summary: Modifica um sistema especifico.
+      summary: Modifica um sistema especifico
+      security: []
       parameters:
         - name: id
           in: path
-          description: Id do
+          description: Id do sistema
           required: true
           style: simple
           explode: false
           schema:
             type: integer
-            example: 1
+            examples: [1]
       requestBody:
-        description: O request contem as informações que serão modificadas. Só é necessário colocar as informações que serão modificadas.
+        description: O request contem as informações que serão modificadas. Só é necessário colocar as informações que serão modificadas
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/System"
       responses:
-        "200":
-          description: Sucesso. Retorna o sistema após ser modificado.
+        200:
+          description: Sucesso. Retorna o sistema após ser modificado
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/System"
-        "400":
+        400:
           description: Request inválido.
-        "404":
-          description: Sistema não foi encontrado.
+        404:
+          description: Sistema não foi encontrado
     delete:
       tags:
         - systems
-      summary: Deleta um sistema especifico.
+      summary: Deleta um sistema especifico
+      security: []
       parameters:
         - name: id
           in: path
-          description: Id do sistema desejado.
+          description: Id do sistema desejado
           required: true
           style: simple
           explode: false
           schema:
             type: integer
-            example: 1
+            examples: [1]
       responses:
-        "200":
+        200:
           description: Sucesso. Retorna o sistema deletado
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/System"
-        "400":
-          description: Request inválido.
-        "404":
-          description: Sistema não foi encontrado.
+        400:
+          description: Request inválido
+        404:
+          description: Sistema não foi encontrado
   /systems/:
     get:
       tags:
         - systems
       summary: Retorna todos os sistemas que possuem o parametro query escolhido
-      description: Retorna todos os sistemas que possuem o parametro query escolhido. Os retorna em um array.
+      description: Retorna todos os sistemas que possuem o parametro query escolhido. Os retorna em um array
+      security: []
       parameters:
         - name: description
           in: query
@@ -142,7 +148,7 @@ paths:
           explode: true
           schema:
             type: string
-            example: Batcave Security System
+            examples: [Batcave Security System]
         - name: acronym
           in: query
           description: sigla do sistema
@@ -151,7 +157,7 @@ paths:
           explode: true
           schema:
             type: string
-            example: BSS
+            examples: [BSS]
         - name: email
           in: query
           description: email do sistema
@@ -160,19 +166,20 @@ paths:
           explode: true
           schema:
             type: string
-            example: batman@yahoo.com
+            examples: [batman@yahoo.com]
       responses:
-        "200":
+        200:
           description: Busca feita com sucesso.
           content:
             application/json:
               schema:
                 type: array
+                minItems: 0
                 items:
                   $ref: "#/components/schemas/System"
-        "400":
+        400:
           description: Request inválido.
-        "404":
+        404:
           description: O sistema buscado não foi encontrado.
 components:
   schemas:
@@ -182,22 +189,58 @@ components:
         - description
         - acronym
       properties:
+        id:
+          type: integer
+          format: int32
+          examples: [1]
+          readOnly: true
+          description: Identificador unico do sistema
+        createdAt:
+          type: string
+          format: date-time
+          examples: [2023-10-12 00:29:52.705]
+          readOnly: true
+          description: Data de criação
+        updatedAt:
+          type: string
+          format: date-time
+          examples: [2023-10-12 00:29:52.705]
+          readOnly: true
+          description: Data de atualização
         description:
           type: string
-          example: "Automatic Autoring System"
+          examples: [Automatic Autoring System]
+          maxLength: 100
+          description: Descrição do sistema
         acronym:
           type: string
-          example: "AAS"
+          examples: [AAS]
+          maxLength: 10
+          description: Sigla do sistema
         email:
           type: string
-          example: "example@hotmail.com"
+          format: email
+          examples: [example@hotmail.com]
+          maxLength: 100
+          description: Email de atendimento do sistema
+        url:
+          type: string
+          examples: [www.app-a-a-system.com]
+          maxLength: 50
+          description: Url de acesso ao sistema
         status:
           type: string
-          example: "CANCELADO"
-          default: "ATIVO"
+          enum: [ATIVO, CANCELADO]
+          examples: [CANCELADO]
+          default: ATIVO
+          description: Status do sistema
         user:
           type: string
-          example: "Pedro"
+          examples: [Pedro]
+          maxLength: 100
+          description: Usuário responsável pela última alteração
         justification:
           type: string
-          example: "Modificando status do sistema."
+          examples: [Modificando status do sistema]
+          maxLength: 500
+          description: Justificativa da última alteração

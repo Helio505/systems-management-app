@@ -35,12 +35,16 @@ export class CreateSystemDto {
   @IsOptional()
   status: Status;
 
+  // User responsible for last update can only be created when updating.
+  // ALERT: Change before production.
   @IsString()
   @IsNotEmpty()
   @MaxLength(100)
   @IsOptional()
   user: string;
 
+  // Justification for last update can only be created when updating.
+  // ALERT: Change before production.
   @IsString()
   @IsNotEmpty()
   @MaxLength(500)
