@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   Alert,
   Button,
@@ -14,6 +14,8 @@ import {
   Label,
   Form as ReactStrapForm,
 } from "reactstrap";
+import { useFormik } from "formik";
+import { object, string } from "yup";
 
 import "../../index.css";
 import { querySystems, getAllSystems } from "../../Components/SystemCrud";
@@ -23,9 +25,6 @@ import MainContent from "../../Components/Layouts/MainContent";
 import SearchResultsTable from "../../Components/Tables/SearchResultsTable";
 import useAlert from "../../Components/Hooks/Alert";
 import { System } from "../../Helpers/types";
-import isEmailValid from "../../Helpers/validateEmail";
-import { useFormik } from "formik";
-import { object, string } from "yup";
 
 function SystemSearch() {
   const navigate = useNavigate();
@@ -244,20 +243,7 @@ function SystemSearch() {
                   </FormGroup>
                 </ReactStrapForm>
 
-                {
-                  // TODO separate into its own component
-                  searchResults && searchResults.length > 0 ? (
-                    <SearchResultsTable searchResults={searchResults} />
-                  ) : (
-                    <Card className="mb-3 bg-light border-0 m-3">
-                      <CardBody>
-                        <h3>
-                          Nenhum sistema encontrado com os filtros informados!
-                        </h3>
-                      </CardBody>
-                    </Card>
-                  )
-                }
+                <SearchResultsTable searchResults={searchResults} />
               </CardBody>
             </Card>
           </MainContent>

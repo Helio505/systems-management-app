@@ -13,7 +13,6 @@ import {
   Input,
   Label,
   Form as ReactStrapForm,
-  Spinner,
 } from "reactstrap";
 import { useFormik } from "formik";
 import { object, string } from "yup";
@@ -26,7 +25,6 @@ import { System } from "../../Helpers/types";
 import { updateSystem } from "../../Components/SystemCrud";
 import convertDate from "../../Helpers/convertDate";
 import useAlert from "../../Components/Hooks/Alert";
-import isEmailValid from "../../Helpers/validateEmail";
 
 function SystemUpdate() {
   const location = useLocation();
