@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Col, Row } from "reactstrap";
+import { Col, Row } from "reactstrap";
 
 type FooterProps = {
   children: React.ReactNode;
