@@ -48,3 +48,8 @@
 - [ ] Implementar seeders para popular o banco de dados com dados de teste.
 - [ ] Implementar tema escuro e tema claro. Tirando proveito das cores predefinidas do bootstrap.
       Armazenar me sessionStorage. Default é light.
+- [ ] Fazer melhor uso das funcionalidades do Typescript no front.
+  - [ ] Criar interfaces melhores para o model.
+  - [ ] Criar interfaces melhores para os componentes.
+  - [ ] Criar interfaces melhores para os hooks.
+  - [ ] Refatorar para utilizar a menor quantidade de `any` possivel.
