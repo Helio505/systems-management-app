@@ -237,7 +237,7 @@ function SystemCreate() {
             <Button
               className="me-4 btn-lg"
               color="primary"
-              onClick={() => navigate("/")}
+              onClick={() => navigate(-1)}
             >
               Voltar
               <i className="ri-arrow-left-line ms-2"></i>
