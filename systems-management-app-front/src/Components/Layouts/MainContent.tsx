@@ -12,6 +12,7 @@ const MainContent = ({ children }: MainContentProps) => {
         xxl={9}
         style={{
           // backgroundColor: "#ffffff",
+          backgroundColor: "#f2f2f2",
           height: "60%",
         }}
       >

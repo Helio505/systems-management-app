@@ -87,6 +87,12 @@ const SearchResultsTable = ({ searchResults }: SearchResultsTableProps) => {
         }}
         className={{
           table: "table table-bordered",
+          // table: "table table-bordered border-light-subtle",
+          // // th: "text-center bg-warning text-white border-light-subtle",
+          // // td: "text-center bg-light border-light-subtle",
+          // thead: "thead-light-subtle border-1 border-light-subtle",
+          // tbody: "bg-light border-1 border-light-subtle",
+          // tr: "bg-light border-1 border-light-subtle",
         }}
         style={{
           th: {
