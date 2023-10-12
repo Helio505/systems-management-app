@@ -1,19 +1,36 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "reactstrap";
+import { Button, Card, CardBody } from "reactstrap";
 import { Grid, _ } from "gridjs-react";
-import "gridjs/dist/theme/mermaid.css";
 
+import "gridjs/dist/theme/mermaid.css";
 import { System } from "../../Helpers/types";
 
 type SearchResultsTableProps = {
-  searchResults: System[];
+  searchResults: System[] | [] | null;
 };
 
 const SearchResultsTable = ({ searchResults }: SearchResultsTableProps) => {
   const navigate = useNavigate();
+
+  // If there are no search results, return nothing:
+  if (!searchResults) {
+    return null;
+  }
+
+  // If there are search results, but there are no systems in array, return message:
+  if (searchResults.length === 0) {
+    return (
+      <Card className="mt-2 mb-3 ms-1 me-1 bg-light border-0">
+        <CardBody>
+          <h3>Nenhum sistema encontrado com os filtros informados!</h3>
+        </CardBody>
+      </Card>
+    );
+  }
+
   return (
-    <div className="m-3">
+    <div className="mt-2 mb-3 ms-1 me-1">
       <Grid
         columns={[
           {
