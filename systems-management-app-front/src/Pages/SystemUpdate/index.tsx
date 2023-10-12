@@ -15,13 +15,13 @@ import {
   Form as ReactStrapForm,
 } from "reactstrap";
 import { useFormik } from "formik";
-import { object, string } from "yup";
+import { mixed, object, string } from "yup";
 
 import Footer from "../../Components/Layouts/Footer";
 import Header from "../../Components/Layouts/Header";
 import MainContent from "../../Components/Layouts/MainContent";
 import CharsCounter from "../../Components/CharsCounter";
-import { System } from "../../Helpers/types";
+import { Status, System } from "../../Helpers/types";
 import { updateSystem } from "../../Components/SystemCrud";
 import convertDate from "../../Helpers/convertDate";
 import useAlert from "../../Components/Hooks/Alert";
@@ -48,22 +48,18 @@ function SystemUpdate() {
   }, [location, location.state, navigate]);
 
   // Function to make the final processing of the data, and send it to the API:
-  const handleUpdateSystem = async (newSystemValues: any) => {
-    // Remove fields that will not be included in the request:
-    delete newSystemValues.user;
-    delete newSystemValues.updatedAt;
-    delete newSystemValues.justificationLastUpdate;
-
+  const handleUpdateSystem = async (newSystemValues: System) => {
     // Removing empty fields:
     for (const key in newSystemValues) {
-      if (newSystemValues[key] === "") {
-        delete newSystemValues[key];
+      if (newSystemValues[key as keyof typeof newSystemValues] === "") {
+        delete newSystemValues[key as keyof typeof newSystemValues];
       }
     }
 
     // const confirm = window.confirm("Deseja realmente atualizar o sistema?");
     // TODO: if no changes were made, block the update
-    // Getting the if of the system to be updated
+
+    // Checking if id of the system to be updated exists:
     if (!previousSystem) {
       activateAlert("danger", "Sistema não encontrado");
       return;
@@ -121,7 +117,7 @@ function SystemUpdate() {
         url: string()
           .optional()
           .max(50, "URL deve ter no máximo 50 caracteres"),
-        status: string().oneOf(["ATIVO", "CANCELADO"], "Status inválido"),
+        status: mixed<Status>().oneOf(Object.values(Status)),
         justification: string()
           .required("Justificativa é obrigatória")
           .max(500, "Justificativa deve ter no máximo 500 caracteres"),
