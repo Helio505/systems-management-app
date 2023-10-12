@@ -155,8 +155,11 @@ function SystemSearch() {
                   {alertObj.message}
                 </Alert>
 
-                <ReactStrapForm onSubmit={handleSubmit} className="pb-1 me-3 ms-1">
-                  <FormGroup row className="ms-3 mb-3">
+                <ReactStrapForm
+                  onSubmit={handleSubmit}
+                  className="pb-1 me-1 ms-1"
+                >
+                  <FormGroup row className="ms-1 mb-3">
                     <Label
                       for="description"
                       size="lg"
@@ -187,7 +190,7 @@ function SystemSearch() {
                       </FormFeedback>
                     </Col>
                   </FormGroup>
-                  <FormGroup row className="ms-3 mb-3">
+                  <FormGroup row className="ms-1 mb-3">
                     <Label
                       for="acronym"
                       size="lg"
@@ -214,7 +217,7 @@ function SystemSearch() {
                       </FormFeedback>
                     </Col>
                   </FormGroup>
-                  <FormGroup row className="ms-3 mb-3">
+                  <FormGroup row className="ms-1 mb-3">
                     <Label
                       for="email"
                       size="lg"

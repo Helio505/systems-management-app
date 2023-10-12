@@ -112,8 +112,8 @@ function SystemCreate() {
                     width: "100%",
                   }}
                 >
-                  <ReactStrapForm className="pb-1 me-3 ms-1">
-                    <FormGroup row className="ms-3 mb-3">
+                  <ReactStrapForm className="pb-1 ms-1 me-1">
+                    <FormGroup row className="ms-1 mb-3">
                       <Label
                         for="description"
                         size="lg"
@@ -145,7 +145,7 @@ function SystemCreate() {
                         </FormFeedback>
                       </Col>
                     </FormGroup>
-                    <FormGroup row className="ms-3 mb-3">
+                    <FormGroup row className="ms-1 mb-3">
                       <Label
                         for="acronym"
                         size="lg"
@@ -159,7 +159,6 @@ function SystemCreate() {
                           type="text"
                           id="acronym"
                           name="acronym"
-                          // className="mt-2"
                           bsSize="lg"
                           onChange={handleChange}
                           onBlur={handleBlur}
@@ -175,7 +174,7 @@ function SystemCreate() {
                         </FormFeedback>
                       </Col>
                     </FormGroup>
-                    <FormGroup row className="ms-3 mb-3">
+                    <FormGroup row className="ms-1 mb-3">
                       <Label
                         for="email"
                         size="lg"
@@ -189,7 +188,6 @@ function SystemCreate() {
                           type="text"
                           id="email"
                           name="email"
-                          // className="mt-2"
                           bsSize="lg"
                           onChange={handleChange}
                           onBlur={handleBlur}
@@ -201,7 +199,7 @@ function SystemCreate() {
                         </FormFeedback>
                       </Col>
                     </FormGroup>
-                    <FormGroup row className="ms-3 mb-3">
+                    <FormGroup row className="ms-1 mb-3">
                       <Label
                         for="url"
                         size="lg"
