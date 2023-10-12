@@ -11,7 +11,6 @@ const MainContent = ({ children }: MainContentProps) => {
       <Row
         xxl={9}
         style={{
-          // backgroundColor: "#ffffff",
           backgroundColor: "#f2f2f2",
           height: "60%",
         }}
@@ -20,11 +19,9 @@ const MainContent = ({ children }: MainContentProps) => {
           xl={3}
           className="w-100"
           style={{
-            // backgroundColor: "red",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
-            // alignItems: "center",
           }}
         >
           {children}
